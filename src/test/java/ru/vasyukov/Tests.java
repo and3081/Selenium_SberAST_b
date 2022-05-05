@@ -1,6 +1,7 @@
 package ru.vasyukov;
 
 import Custom.properties.TestData;
+import Pages.PageYandexSearch;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,7 +34,8 @@ public class Tests extends BaseTests {
     @ParameterizedTest(name = "{displayName} {arguments}")
     @MethodSource("ru.vasyukov.DataProvider#providerYandexMarket")
     public void testYandexMarketChoice(List<String> prices, List<String> factories, List<String> counts) {
-        open(TestData.props.baseUrlYandex());
+        open(TestData.props.baseUrlYandex(), PageYandexSearch.class)
+                .checkYandexTitle();
 
     }
 
