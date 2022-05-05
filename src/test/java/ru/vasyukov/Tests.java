@@ -35,7 +35,10 @@ public class Tests extends BaseTests {
     @MethodSource("ru.vasyukov.DataProvider#providerYandexMarket")
     public void testYandexMarketChoice(List<String> prices, List<String> factories, List<String> counts) {
         open(TestData.props.baseUrlYandex(), PageYandexSearch.class)
-                .checkYandexTitle();
+                .checkYandexTitle()
+                .clickYandexMarketAndSwitch().nextPageYandexMarketMain()
+                .checkYandexMarketTitle()
+                .clickCatalogButton();
 
     }
 

@@ -1,24 +1,29 @@
 package Pages;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 /**
  * Page класс поисковой страницы https://yandex.ru/
  */
-public class PageYandexSearch {
-    /**
-     * title базовой страницы
-     */
-    public String TITLE_YANDEX = "Яндекс";
-    public String XPATH_YANDEX_TITLE = "//head/title";
+public class PageYandexSearch extends BasePage {
     /**
      * xPath клик-иконки Яндекс Маркета
      */
     public String XPATH_ICON_YANDEX_MARKET = "//a[@data-id='market']";
 
     public PageYandexSearch checkYandexTitle() {
-        $x(XPATH_YANDEX_TITLE).shouldHave(attribute("textContent", TITLE_YANDEX));
+        $x(XPATH_TITLE).shouldHave(attribute("textContent", TITLE_YANDEX));
         return this;
+    }
+
+    public PageYandexSearch clickYandexMarketAndSwitch() {
+        $x(XPATH_ICON_YANDEX_MARKET).shouldBe(visible, enabled).click();
+        switchTo().window(TITLE_YANDEX_MARKET);
+        return this;
+    }
+
+    public PageYandexMarketMain nextPageYandexMarketMain() {
+        return page(PageYandexMarketMain.class);
     }
 }
