@@ -27,12 +27,12 @@ public class Tests extends BaseTests {
      * Тест-кейс выборки и поиска в Яндекс-маркет (версии v.1 и v.2)
      * параметры поставляются провайдером данных providerYandexMarket()
      * @param factories  список названий Производителей
-     * @param count     количество Просмотра для v.1 (на выбор) и v.2 (удвоенное при Просмотреть еще)
+     * @param countForOld     количество Просмотра для v.1 (на выбор) и v.2 (удвоенное при Просмотреть еще)
      */
     @DisplayName("Тестирование выборки в Яндекс-маркет")
     @ParameterizedTest(name = "{displayName} {arguments}")
     @MethodSource("ru.vasyukov.DataProvider#providerYandexMarket")
-    public void testYandexMarketChoice(List<String> itemsNameMenu, List<String> factories, String count) {
+    public void testYandexMarketChoice(List<String> itemsNameMenu, List<String> factories, String countForOld) {
         open(TestData.props.baseUrlYandex(), PageYandexSearch.class)
                 .checkYandexTitle()
                 .clickYandexMarketAndSwitch().nextPageYandexMarketMain()
@@ -45,7 +45,7 @@ public class Tests extends BaseTests {
                 .clickAllFactoriesButton()
                 .inputFactorySearch(factories.get(0))
                 .clickFactoryItemAndWait(factories.get(0))
-                .selectChoiceCountViewAndWaitV1(count)
+                .selectChoiceCountViewAndWaitV1(countForOld)
                 .checkAllPagesArticlesName(factories.get(0));
     }
 }
