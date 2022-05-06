@@ -115,11 +115,7 @@ public class PageYandexMarketChoice extends BasePage {
             listFiltered = $$x(XPATH_PAGINATION_BUTTONS_2).shouldBe(sizeGreaterThan(0))
                     .filterBy(attribute("data-auto", "pagination-next"));
         }
-        System.out.println(listFiltered.size());
-        if (listFiltered.size()>0) {
-            System.out.println(listFiltered.get(0));
-            boolean b=waitRealClick(listFiltered.get(0).shouldBe(visible, enabled));
-            System.out.println(b);
+        if (listFiltered.size()>0 && waitRealClick(listFiltered.get(0).shouldBe(visible, enabled))) {
             waitEndChoice();
             return true;
         }
