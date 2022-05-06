@@ -42,14 +42,10 @@ public class Tests extends BaseTests {
                 .checkHeadChapterCatalog(itemsNameMenu.get(0))
                 .clickItemCatalog(itemsNameMenu.get(1)).nextPageYandexMarketChoice()
                 .checkNameInCrumbs(itemsNameMenu.get(1))
-                .checkVersionPage()
                 .clickAllFactoriesButton()
                 .inputFactorySearch(factories.get(0))
-                .clickFactoryItem(factories.get(0))
-                .waitEndChoice()
+                .clickFactoryItemAndWait(factories.get(0))
                 .selectChoiceCountViewAndWaitV1(count)
-                .checkSearchedArticlesName(factories.get(0));
-
+                .checkAllPagesArticlesName(factories.get(0));
     }
-
 }

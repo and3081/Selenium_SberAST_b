@@ -14,11 +14,7 @@ public class BasePage {
     public String TITLE_YANDEX_MARKET =
             "Интернет-магазин Яндекс.Маркет — покупки с быстрой доставкой";
 
-    public PageYandexMarketMain nextPageYandexMarketMain() {
-        return page(PageYandexMarketMain.class);
-    }
+    public PageYandexMarketMain nextPageYandexMarketMain() { return page(PageYandexMarketMain.class); }
 
-    public PageYandexMarketChoice nextPageYandexMarketChoice() {
-        return page(PageYandexMarketChoice.class);
-    }
+    public PageYandexMarketChoice nextPageYandexMarketChoice() { return page(PageYandexMarketChoice.class); }
 }

@@ -1,11 +1,6 @@
 package Pages;
 
-import com.codeborne.selenide.CollectionCondition;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import com.codeborne.selenide.ElementsCollection;
 
 import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.CollectionCondition.empty;
@@ -14,7 +9,7 @@ import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class PageYandexMarketChoice extends BasePage {
-    public int versionPage = 1;  // old
+    private int versionPage = 1;  // old version
     /**
      * xPath меню <Хлебные крошки>
      */
@@ -59,11 +54,13 @@ public class PageYandexMarketChoice extends BasePage {
      */
     public static final String XPATH_SEARCHED_ARTICLES_TEXT =
             "//div[@aria-label='Результаты поиска']//article//a[@title]//span[text()]";
-    public String XPATH_VIEW_BUTTON_FORWARD_1 = "//a[@aria-label='Следующая страница']";  // text="Вперёд"
-    public String XPATH_VIEW_BUTTON_FORWARD_2 = "//div[@data-auto='pagination-next']";  // text="Вперёд"
+    public String XPATH_PAGINATION_BUTTONS_1 = "//a[@aria-label[contains(.,'траница')]]";
+    public String XPATH_PAGINATION_BUTTONS_2 = "//div[@data-auto[contains(.,'pagination')]]";
 
     public PageYandexMarketChoice checkNameInCrumbs(String name) {
-        $$x(XPATH_CRUMBS).shouldBe(sizeGreaterThanOrEqual(3)).get(2).shouldHave(visible, exactText(name));
+        $$x(XPATH_CRUMBS).shouldBe(sizeGreaterThanOrEqual(3)).get(2)
+                .should(be(visible), have(exactText(name)));
+        checkVersionPage();
         return this;
     }
 
@@ -79,32 +76,10 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
-    public PageYandexMarketChoice clickFactoryItem(String nameFactory) {
+    public PageYandexMarketChoice clickFactoryItemAndWait(String nameFactory) {
         $x(XPATH_FACTORIES_ITEM)
                 .should(be(visible), be(enabled), have(exactText(nameFactory))).click();
-        return this;
-    }
-
-    /**
-     * Шаг Ожидание завершения выборки
-     */
-    public PageYandexMarketChoice waitEndChoice() {
-        if (versionPage == 1) {
-            // пример старая версия изменение выборки:
-            //   до:         у div aria-label='Результаты поиска' - 1 дочерний div
-            //   клик в выборке
-            //   серое окно: появляется доп.дочерний временный div (или несколько)
-            //   результат:  доп.временный div убирается, снова 1 дочерний div
-            $$x(XPATH_CHOICE_PROGRESS1)
-                    .shouldBe(sizeGreaterThan(1))
-                    .shouldBe(size(1));
-        } else {
-            // пример старая версия изменение выборки:
-            // аналогично, но доп. div появляется сестринский, а не дочерний
-            $$x(XPATH_CHOICE_PROGRESS2)
-                    .shouldBe(sizeGreaterThan(1))
-                    .shouldBe(size(1));
-        }
+        waitEndChoice();
         return this;
     }
 
@@ -118,9 +93,54 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
+    public PageYandexMarketChoice checkAllPagesArticlesName(String factory) {
+        int i = 100;  // предохранитель
+        do { checkSearchedArticlesName(factory);
+        } while ((--i >0) && isClickButtonForwardAndWait());
+        return this;
+    }
+
     public PageYandexMarketChoice checkSearchedArticlesName(String factory) {
             $$x(XPATH_SEARCHED_ARTICLES_TEXT).shouldBe(sizeGreaterThan(0))
                     .excludeWith(text(factory)).shouldBe(empty);
+        return this;
+    }
+
+    public boolean isClickButtonForwardAndWait() {
+        ElementsCollection listFiltered;
+        if (versionPage == 1) {
+            listFiltered = $$x(XPATH_PAGINATION_BUTTONS_1).shouldBe(sizeGreaterThan(0))
+                    .filterBy(attribute("aria-label", "Следующая страница"));
+        } else {
+            listFiltered = $$x(XPATH_PAGINATION_BUTTONS_2).shouldBe(sizeGreaterThan(0))
+                    .filterBy(attribute("data-auto", "pagination-next"));
+        }
+        if (listFiltered.size()>0) {
+            listFiltered.get(0).shouldBe(visible, enabled).click();
+            waitEndChoice();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Шаг Ожидание завершения выборки
+     */
+    public PageYandexMarketChoice waitEndChoice() {
+        if (versionPage == 1) {
+            // пример старая версия изменение выборки:
+            //   до:         у div aria-label='Результаты поиска' - 1 дочерний div
+            //   клик в выборке
+            //   серое окно: появляется доп.дочерний временный div (или несколько)
+            //   результат:  доп.временный div убирается, снова 1 дочерний div
+            $$x(XPATH_CHOICE_PROGRESS1).shouldBe(sizeGreaterThan(1));
+            $$x(XPATH_CHOICE_PROGRESS1).shouldBe(size(1));
+        } else {
+            // пример новая версия изменение выборки:
+            // аналогично, но доп. div появляется сестринский, а не дочерний
+            $$x(XPATH_CHOICE_PROGRESS2).shouldBe(sizeGreaterThan(1));
+            $$x(XPATH_CHOICE_PROGRESS2).shouldBe(size(1));
+        }
         return this;
     }
 
