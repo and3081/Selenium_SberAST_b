@@ -19,6 +19,9 @@ public class DataProvider {
      *                                    количество Просмотра для v.2 (удвоенное при Просмотреть еще))
      */
     protected static Stream<Arguments> providerYandexMarket() {
-        return Stream.of(arguments(List.of("10000", "900000"), List.of("HP", "Lenovo"), List.of("12", "96")));
+        return Stream.of(arguments(List.of("Электроника", "Смартфоны"),
+                List.of("Apple", "Google", "HONOR", "HUAWEI", "Nokia", "OnePlus", "OPPO",
+                        "realme", "Samsung", "vivo", "Xiaomi", "ZTE"),
+                List.of("12", "96")));
     }
 }

@@ -22,8 +22,4 @@ public class PageYandexSearch extends BasePage {
         switchTo().window(TITLE_YANDEX_MARKET);
         return this;
     }
-
-    public PageYandexMarketMain nextPageYandexMarketMain() {
-        return page(PageYandexMarketMain.class);
-    }
 }

@@ -10,23 +10,15 @@ public class PageYandexMarketMain extends BasePage {
     /**
      * xPath кнопки <Каталог>
      */
-    public static final String XPATH_BUTTON_CATALOG = "//button[@id='catalogPopupButton']";
+    public String XPATH_BUTTON_CATALOG = "//button[@id='catalogPopupButton']";
     /**
      * xPath пункта <Компьютеры> в меню каталога
      */
-    public static final String XPATH_MENU_COMPUTERS = "//li/a[.//text()='Компьютеры']";
+    public String XPATH_ITEM_MENU = "//li//a[.//text()='REPLACEMENT']";
     /**
      * xPath заголовка <Компьютеры> после открытия пункта Компьютеры в меню каталога
      */
-    public static final String XPATH_HEAD_COMPUTERS = "//div/a[.//text()='Компьютеры']";
-    /**
-     * xPath пункта <Ноутбуки> в меню <Компьютеры>
-     */
-    public static final String XPATH_MENU_NOTEBOOKS = "//li//a[./text()='Ноутбуки']";
-    /**
-     * xPath меню <Хлебные крошки>
-     */
-    public static final String XPATH_CRUMBS = "//a/span[./@itemprop]";
+    public String XPATH_HEAD_CHAPTER_CATALOG = "//div/h1[text()='REPLACEMENT']";
 
     public PageYandexMarketMain checkYandexMarketTitle() {
         $x(XPATH_TITLE)
@@ -36,6 +28,16 @@ public class PageYandexMarketMain extends BasePage {
 
     public PageYandexMarketMain clickCatalogButton() {
         $x(XPATH_BUTTON_CATALOG).shouldBe(visible, enabled).click();
+        return this;
+    }
+
+    public PageYandexMarketMain clickItemCatalog(String itemNameMenu) {
+        $x(XPATH_ITEM_MENU.replace("REPLACEMENT", itemNameMenu)).shouldBe(visible, enabled).click();
+        return this;
+    }
+
+    public PageYandexMarketMain checkHeadChapterCatalog(String itemNameMenu) {
+        $x(XPATH_HEAD_CHAPTER_CATALOG.replace("REPLACEMENT", itemNameMenu)).shouldBe(visible);
         return this;
     }
 }
