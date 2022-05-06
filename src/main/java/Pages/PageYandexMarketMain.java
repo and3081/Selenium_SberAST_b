@@ -21,18 +21,17 @@ public class PageYandexMarketMain extends BasePage {
     public String XPATH_HEAD_CHAPTER_CATALOG = "//div/h1[text()='REPLACEMENT']";
 
     public PageYandexMarketMain checkYandexMarketTitle() {
-        $x(XPATH_TITLE)
-                .shouldHave(attribute("textContent", TITLE_YANDEX_MARKET));
+        checkTitle(TITLE_YANDEX_MARKET);
         return this;
     }
 
     public PageYandexMarketMain clickCatalogButton() {
-        $x(XPATH_BUTTON_CATALOG).shouldBe(visible, enabled).click();
+        waitRealClick($x(XPATH_BUTTON_CATALOG).shouldBe(visible, enabled));
         return this;
     }
 
     public PageYandexMarketMain clickItemCatalog(String itemNameMenu) {
-        $x(XPATH_ITEM_MENU.replace("REPLACEMENT", itemNameMenu)).shouldBe(visible, enabled).click();
+        waitRealClick($x(XPATH_ITEM_MENU.replace("REPLACEMENT", itemNameMenu)).shouldBe(visible, enabled));
         return this;
     }
 

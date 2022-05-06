@@ -22,11 +22,11 @@ public interface Props extends Config {
     @Key("webdriver.edge.local.path")
     String webdriverEdgeLocalPath();
 
-    @Key("default.timeout.implicit")
-    String defaultTimeoutImplicit();
+    @Key("default.timeout.implicit.ms")
+    String defaultTimeoutImplicitMs();
 
-    @Key("default.timeout.explicit")
-    String defaultTimeoutExplicit();
+    @Key("default.timeout.explicit.ms")
+    String defaultTimeoutExplicitMs();
 
     @Key("listener.type")
     String listenerType();

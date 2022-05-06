@@ -65,8 +65,8 @@ public class PageYandexMarketChoice extends BasePage {
     }
 
     public PageYandexMarketChoice clickAllFactoriesButton() {
-        $x((versionPage==1) ? XPATH_ALL_FACTORIES_BUTTON_1 : XPATH_ALL_FACTORIES_BUTTON_2)
-                .shouldBe(visible, enabled).click();
+        waitRealClick($x((versionPage==1) ? XPATH_ALL_FACTORIES_BUTTON_1 : XPATH_ALL_FACTORIES_BUTTON_2)
+                .shouldBe(visible, enabled));
         return this;
     }
 
@@ -77,17 +77,17 @@ public class PageYandexMarketChoice extends BasePage {
     }
 
     public PageYandexMarketChoice clickFactoryItemAndWait(String nameFactory) {
-        $x(XPATH_FACTORIES_ITEM)
-                .should(be(visible), be(enabled), have(exactText(nameFactory))).click();
+        waitRealClick($x(XPATH_FACTORIES_ITEM)
+                .should(be(visible), be(enabled), have(exactText(nameFactory))));
         waitEndChoice();
         return this;
     }
 
     public PageYandexMarketChoice selectChoiceCountViewAndWaitV1(String count) {
         if (versionPage == 1) {
-            $x(XPATH_COUNT_ITEMS1).shouldBe(visible, enabled).click();
-            $$x(XPATH_COUNT_ITEMS_OPTIONS1).shouldBe(sizeGreaterThan(0))
-                    .findBy(text(count)).shouldBe(visible, enabled).click();
+            waitRealClick($x(XPATH_COUNT_ITEMS1).shouldBe(visible, enabled));
+            waitRealClick($$x(XPATH_COUNT_ITEMS_OPTIONS1).shouldBe(sizeGreaterThan(0))
+                    .findBy(text(count)).shouldBe(visible, enabled));
             waitEndChoice();
         }
         return this;
@@ -115,8 +115,11 @@ public class PageYandexMarketChoice extends BasePage {
             listFiltered = $$x(XPATH_PAGINATION_BUTTONS_2).shouldBe(sizeGreaterThan(0))
                     .filterBy(attribute("data-auto", "pagination-next"));
         }
+        System.out.println(listFiltered.size());
         if (listFiltered.size()>0) {
-            listFiltered.get(0).shouldBe(visible, enabled).click();
+            System.out.println(listFiltered.get(0));
+            boolean b=waitRealClick(listFiltered.get(0).shouldBe(visible, enabled));
+            System.out.println(b);
             waitEndChoice();
             return true;
         }
