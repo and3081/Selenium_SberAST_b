@@ -1,9 +1,14 @@
 package Pages;
 
 import com.codeborne.selenide.CollectionCondition;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThanOrEqual;
-import static com.codeborne.selenide.CollectionCondition.texts;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.codeborne.selenide.CollectionCondition.*;
+import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
@@ -33,6 +38,27 @@ public class PageYandexMarketChoice extends BasePage {
     public String XPATH_FACTORIES_SEARCH_1 = XPATH_BASE_FACTORIES + "//input[@name='Поле поиска']";
     public String XPATH_FACTORIES_SEARCH_2 = XPATH_BASE_FACTORIES + "//div[label[text()='Найти производителя']]//input";
     public String XPATH_FACTORIES_ITEM = XPATH_BASE_FACTORIES + "//label[.//input[@type='checkbox']]//span[text()]";
+    /**
+     * xPath элемента для анализа появления и пропадания серого экрана (версия 1)
+     */
+    public String XPATH_CHOICE_PROGRESS1 = "//div[@aria-label='Результаты поиска']/div";
+    /**
+     * xPath элемента для анализа появления и пропадания серого экрана (версия 2)
+     */
+    public String XPATH_CHOICE_PROGRESS2 = "//div[@aria-label='Результаты поиска']/parent::div/div";
+    /**
+     * xPath кнопки <Показывать по> (версия 1)
+     */
+    public static final String XPATH_COUNT_ITEMS1 = "//button[.//span//text()[contains(.,'Показывать по')]]";
+    /**
+     * xPath опций кнопки <Показывать по> (версия 1)
+     */
+    public static final String XPATH_COUNT_ITEMS_OPTIONS1 = XPATH_COUNT_ITEMS1 + "/following-sibling::div//button";
+    /**
+     * xPath title списка показанных товаров
+     */
+    public static final String XPATH_SEARCHED_ARTICLES_TEXT =
+            "//div[@aria-label='Результаты поиска']//article//a[@title]//span[text()]";
     public String XPATH_VIEW_BUTTON_FORWARD_1 = "//a[@aria-label='Следующая страница']";  // text="Вперёд"
     public String XPATH_VIEW_BUTTON_FORWARD_2 = "//div[@data-auto='pagination-next']";  // text="Вперёд"
 
@@ -56,6 +82,45 @@ public class PageYandexMarketChoice extends BasePage {
     public PageYandexMarketChoice clickFactoryItem(String nameFactory) {
         $x(XPATH_FACTORIES_ITEM)
                 .should(be(visible), be(enabled), have(exactText(nameFactory))).click();
+        return this;
+    }
+
+    /**
+     * Шаг Ожидание завершения выборки
+     */
+    public PageYandexMarketChoice waitEndChoice() {
+        if (versionPage == 1) {
+            // пример старая версия изменение выборки:
+            //   до:         у div aria-label='Результаты поиска' - 1 дочерний div
+            //   клик в выборке
+            //   серое окно: появляется доп.дочерний временный div (или несколько)
+            //   результат:  доп.временный div убирается, снова 1 дочерний div
+            $$x(XPATH_CHOICE_PROGRESS1)
+                    .shouldBe(sizeGreaterThan(1))
+                    .shouldBe(size(1));
+        } else {
+            // пример старая версия изменение выборки:
+            // аналогично, но доп. div появляется сестринский, а не дочерний
+            $$x(XPATH_CHOICE_PROGRESS2)
+                    .shouldBe(sizeGreaterThan(1))
+                    .shouldBe(size(1));
+        }
+        return this;
+    }
+
+    public PageYandexMarketChoice selectChoiceCountViewAndWaitV1(String count) {
+        if (versionPage == 1) {
+            $x(XPATH_COUNT_ITEMS1).shouldBe(visible, enabled).click();
+            $$x(XPATH_COUNT_ITEMS_OPTIONS1).shouldBe(sizeGreaterThan(0))
+                    .findBy(text(count)).shouldBe(visible, enabled).click();
+            waitEndChoice();
+        }
+        return this;
+    }
+
+    public PageYandexMarketChoice checkSearchedArticlesName(String factory) {
+            $$x(XPATH_SEARCHED_ARTICLES_TEXT).shouldBe(sizeGreaterThan(0))
+                    .excludeWith(text(factory)).shouldBe(empty);
         return this;
     }
 

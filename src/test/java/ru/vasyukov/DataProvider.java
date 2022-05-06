@@ -22,6 +22,6 @@ public class DataProvider {
         return Stream.of(arguments(List.of("Электроника", "Смартфоны"),
                 List.of("Apple", "Google", "HONOR", "HUAWEI", "Nokia", "OnePlus", "OPPO",
                         "realme", "Samsung", "vivo", "Xiaomi", "ZTE"),
-                List.of("12", "96")));
+                "12"));
     }
 }
