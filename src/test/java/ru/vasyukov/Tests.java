@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 
+import static Pages.BasePage.openFirstPageYandexSearch;
 import static com.codeborne.selenide.Selenide.open;
 
 /**
@@ -33,7 +34,7 @@ public class Tests extends BaseTests {
     @ParameterizedTest(name = "{displayName} {arguments}")
     @MethodSource("ru.vasyukov.DataProvider#providerYandexMarket")
     public void testYandexMarketChoice(List<String> itemsNameMenu, List<String> factories, String countForOld) {
-        open(TestData.props.baseUrlYandex(), PageYandexSearch.class)
+        openFirstPageYandexSearch()
                 .checkYandexTitle()
                 .clickYandexMarketAndSwitch().nextPageYandexMarketMain()
                 .checkYandexMarketTitle()

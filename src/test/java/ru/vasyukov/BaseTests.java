@@ -10,8 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.events.WebDriverListener;
 
-import static com.codeborne.selenide.WebDriverRunner.addListener;
-import static com.codeborne.selenide.WebDriverRunner.setWebDriver;
+import static com.codeborne.selenide.WebDriverRunner.*;
 
 public class BaseTests {
     /**
@@ -22,13 +21,6 @@ public class BaseTests {
     @BeforeEach
     public void options() {
         Configuration.timeout=Long.parseLong(TestData.props.defaultTimeoutImplicitMs());
-
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("start-maximized");
-//
-//        MutableCapabilities capabilities = new MutableCapabilities();
-//        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-//        Configuration.browserCapabilities = capabilities;
         //addListener(listener);
         if (TestData.props.headlessMode() !=null) Configuration.headless = true;
         if (TestData.props.dontCloseBrowser() !=null) Configuration.holdBrowserOpen = true;
@@ -42,8 +34,9 @@ public class BaseTests {
         else Configuration.browser="chrome";
 
 //        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("start-maximized");
-//        DesiredCapabilities capabilities = new DesiredCapabilities();
+//        options.addArguments("start-maximized");  // устарел, use  getWebDriver().manage().window().maximize();
+//        DesiredCapabilities capabilities = new DesiredCapabilities();  // old
+//        MutableCapabilities capabilities = new MutableCapabilities();  // new
 //        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 //        Configuration.browserCapabilities = capabilities;
 

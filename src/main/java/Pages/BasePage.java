@@ -34,9 +34,14 @@ public class BasePage {
     public String TITLE_YANDEX_MARKET =
             "Интернет-магазин Яндекс.Маркет — покупки с быстрой доставкой";
 
-    public void checkTitle(String title) {
-        $x(XPATH_TITLE).shouldHave(attribute("textContent", title));
-    }
+    public void checkTitle(String title) { $x(XPATH_TITLE).shouldHave(attribute("textContent", title)); }
+
+    public static void maxWindow() { getWebDriver().manage().window().maximize(); }
+
+    public static PageYandexSearch openFirstPageYandexSearch() {
+        open(TestData.props.baseUrlYandex());
+        maxWindow();
+        return page(PageYandexSearch.class); }
 
     public PageYandexMarketMain nextPageYandexMarketMain() { return page(PageYandexMarketMain.class); }
 
