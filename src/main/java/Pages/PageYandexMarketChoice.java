@@ -1,6 +1,7 @@
 package Pages;
 
 import com.codeborne.selenide.ElementsCollection;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.CollectionCondition.empty;
@@ -57,6 +58,7 @@ public class PageYandexMarketChoice extends BasePage {
     public String XPATH_PAGINATION_BUTTONS_1 = "//a[@aria-label[contains(.,'траница')]]";
     public String XPATH_PAGINATION_BUTTONS_2 = "//div[@data-auto[contains(.,'pagination')]]";
 
+    @Step("step {step}. ")  // step
     public PageYandexMarketChoice checkNameInCrumbs(String step, String name) {
         $$x(XPATH_CRUMBS).shouldBe(sizeGreaterThanOrEqual(3)).get(2)
                 .should(be(visible), have(exactText(name)));
@@ -64,18 +66,21 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
+    @Step("step {step}. ")  // step
     public PageYandexMarketChoice clickAllFactoriesButton(String step) {
         waitRealClick($x((versionPage==1) ? XPATH_ALL_FACTORIES_BUTTON_1 : XPATH_ALL_FACTORIES_BUTTON_2)
                 .shouldBe(visible, enabled));
         return this;
     }
 
+    @Step("step {step}. ")  // step
     public PageYandexMarketChoice inputFactorySearch(String step, String nameFactory) {
         $x((versionPage==1) ? XPATH_FACTORIES_SEARCH_1 : XPATH_FACTORIES_SEARCH_2)
                 .shouldBe(visible, enabled).setValue(nameFactory).pressEnter();
         return this;
     }
 
+    @Step("step {step}. ")  // step
     public PageYandexMarketChoice clickFactoryItemAndWait(String step, String nameFactory) {
         waitRealClick($x(XPATH_FACTORIES_ITEM)
                 .should(be(visible), be(enabled), have(exactText(nameFactory))));
@@ -83,6 +88,7 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
+    @Step("step {step}. ")  // step
     public PageYandexMarketChoice selectChoiceCountViewAndWaitForOld(String step, String count) {
         if (versionPage==1 && $$x(XPATH_COUNT_ITEMS1).size()>0) {  // м.не быть кнопки if все на 1 экране
             waitRealClick($x(XPATH_COUNT_ITEMS1).shouldBe(visible, enabled));
@@ -93,6 +99,7 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
+    @Step("step {step}. ")  // step
     public PageYandexMarketChoice checkAllPagesArticlesName(String step, String factory) {
         int i = 100;  // предохранитель
         do { checkSearchedArticlesName(factory);
@@ -116,7 +123,7 @@ public class PageYandexMarketChoice extends BasePage {
                     .filterBy(attribute("data-auto", "pagination-next"));
         }
         if (listFiltered.size()>0 && waitRealClick(listFiltered.get(0)
-                .scrollIntoView(false).shouldBe(visible, enabled))) {
+                .scrollIntoView(false).shouldBe(visible, enabled))) {  // scroll тут на всяк, иначе иногда не попадает клик
             waitEndChoice();
             return true;
         }

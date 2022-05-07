@@ -2,6 +2,7 @@ package Pages;
 
 import Custom.properties.TestData;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -38,6 +39,7 @@ public class BasePage {
 
     public static void maxWindow() { getWebDriver().manage().window().maximize(); }
 
+    @Step("step {step}. Переходим на сайт Яндекс")  // step 1
     public static PageYandexSearch openFirstPageYandexSearch(String step) {
         open(TestData.props.baseUrlYandex());
         maxWindow();
