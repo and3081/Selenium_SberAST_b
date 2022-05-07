@@ -58,7 +58,7 @@ public class PageYandexMarketChoice extends BasePage {
     public String XPATH_PAGINATION_BUTTONS_1 = "//a[@aria-label[contains(.,'траница')]]";
     public String XPATH_PAGINATION_BUTTONS_2 = "//div[@data-auto[contains(.,'pagination')]]";
 
-    @Step("step {step}. ")  // step
+    @Step("step {step}. Проверить название раздела '{name}' в крошках")  // step 9
     public PageYandexMarketChoice checkNameInCrumbs(String step, String name) {
         $$x(XPATH_CRUMBS).shouldBe(sizeGreaterThanOrEqual(3)).get(2)
                 .should(be(visible), have(exactText(name)));
@@ -66,21 +66,21 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
-    @Step("step {step}. ")  // step
+    @Step("step {step}. Нажать кнопку производителей 'Показать всё'")  // step 10
     public PageYandexMarketChoice clickAllFactoriesButton(String step) {
         waitRealClick($x((versionPage==1) ? XPATH_ALL_FACTORIES_BUTTON_1 : XPATH_ALL_FACTORIES_BUTTON_2)
                 .shouldBe(visible, enabled));
         return this;
     }
 
-    @Step("step {step}. ")  // step
+    @Step("step {step}. Ввести в выборе название производителя '{nameFactory}'")  // step 11
     public PageYandexMarketChoice inputFactorySearch(String step, String nameFactory) {
         $x((versionPage==1) ? XPATH_FACTORIES_SEARCH_1 : XPATH_FACTORIES_SEARCH_2)
                 .shouldBe(visible, enabled).setValue(nameFactory).pressEnter();
         return this;
     }
 
-    @Step("step {step}. ")  // step
+    @Step("step {step}. Поставить чекбокс производителя '{nameFactory}' и ожидать выборку")  // step 12
     public PageYandexMarketChoice clickFactoryItemAndWait(String step, String nameFactory) {
         waitRealClick($x(XPATH_FACTORIES_ITEM)
                 .should(be(visible), be(enabled), have(exactText(nameFactory))));
@@ -88,7 +88,7 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
-    @Step("step {step}. ")  // step
+    @Step("step {step}. (для старой версии) Выбрать количество просмотра '{count}'")  // step 13
     public PageYandexMarketChoice selectChoiceCountViewAndWaitForOld(String step, String count) {
         if (versionPage==1 && $$x(XPATH_COUNT_ITEMS1).size()>0) {  // м.не быть кнопки if все на 1 экране
             waitRealClick($x(XPATH_COUNT_ITEMS1).shouldBe(visible, enabled));
@@ -99,7 +99,7 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
-    @Step("step {step}. ")  // step
+    @Step("step {step}. Проверить все найденные страницы для производителя '{factory}'")  // step 14
     public PageYandexMarketChoice checkAllPagesArticlesName(String step, String factory) {
         int i = 100;  // предохранитель
         do { checkSearchedArticlesName(factory);

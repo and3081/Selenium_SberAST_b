@@ -3,6 +3,7 @@ package ru.vasyukov;
 import Custom.listeners.Listeners;
 import Custom.properties.TestData;
 import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -42,5 +43,10 @@ public class BaseTests {
 //        WebDriver driver;
 //        driver = new ChromeDriver(options);
 //        setWebDriver(driver);
+    }
+
+    @AfterEach
+    public void close() {
+        closeWindow();  // для повтора теста по производителям
     }
 }

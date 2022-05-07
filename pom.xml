@@ -16,7 +16,7 @@
         <selenium.support>4.1.4</selenium.support>
         <qameta.allure>2.17.3</qameta.allure>
         <aspectj.version>1.9.4</aspectj.version>
-        <allure.version>2.13.0</allure.version>
+        <allure.version>2.17.3</allure.version>
         <selenide.version>6.4.0</selenide.version>
         <owner.version>1.0.12</owner.version>
     </properties>

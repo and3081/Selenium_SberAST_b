@@ -35,11 +35,14 @@ public class BasePage {
     public String TITLE_YANDEX_MARKET =
             "Интернет-магазин Яндекс.Маркет — покупки с быстрой доставкой";
 
-    public void checkTitle(String title) { $x(XPATH_TITLE).shouldHave(attribute("textContent", title)); }
+    @Step("step {step}. Проверить title страницы '{title}'")  // step 2/4
+    public void checkTitle(String step, String title) {
+        $x(XPATH_TITLE).shouldHave(attribute("textContent", title));
+    }
 
     public static void maxWindow() { getWebDriver().manage().window().maximize(); }
 
-    @Step("step {step}. Переходим на сайт Яндекс")  // step 1
+    @Step("step {step}. Открыть браузер и стартовую страницу Яндекс")  // step 1
     public static PageYandexSearch openFirstPageYandexSearch(String step) {
         open(TestData.props.baseUrlYandex());
         maxWindow();

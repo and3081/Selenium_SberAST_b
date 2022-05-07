@@ -22,25 +22,24 @@ public class PageYandexMarketMain extends BasePage {
      */
     public String XPATH_HEAD_CHAPTER_CATALOG = "//div/h1[text()='REPLACEMENT']";
 
-    @Step("step {step}. ")  // step
     public PageYandexMarketMain checkYandexMarketTitle(String step) {
-        checkTitle(TITLE_YANDEX_MARKET);
+        checkTitle(step, TITLE_YANDEX_MARKET);
         return this;
     }
 
-    @Step("step {step}. Переходим по кнопке в каталог и наводим на раздел Компьютеры")  // step 4
+    @Step("step {step}. Открыть каталог")  // step 5
     public PageYandexMarketMain clickCatalogButton(String step) {
         waitRealClick($x(XPATH_BUTTON_CATALOG).shouldBe(visible, enabled));
         return this;
     }
 
-    @Step("step {step}. ")  // step
+    @Step("step {step}. Открыть в меню каталога '{itemNameMenu}'")  // step 6/8
     public PageYandexMarketMain clickItemCatalog(String step, String itemNameMenu) {
         waitRealClick($x(XPATH_ITEM_MENU.replace("REPLACEMENT", itemNameMenu)).shouldBe(visible, enabled));
         return this;
     }
 
-    @Step("step {step}. ")  // step
+    @Step("step {step}. Проверить название раздела '{itemNameMenu}'")  // step 7
     public PageYandexMarketMain checkHeadChapterCatalog(String step, String itemNameMenu) {
         $x(XPATH_HEAD_CHAPTER_CATALOG.replace("REPLACEMENT", itemNameMenu)).shouldBe(visible);
         return this;
