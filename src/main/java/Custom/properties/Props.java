@@ -5,6 +5,7 @@ import org.aeonbits.owner.Config;
 /**
  * Интерфейс для работы с проперти из файла props.properties и системными проперти
  * usage:  TestData.props.имяМетодаКлюча()
+ * Описание в файле проперти
  */
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({

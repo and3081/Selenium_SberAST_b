@@ -11,12 +11,18 @@ import org.openqa.selenium.support.events.WebDriverListener;
 
 import static com.codeborne.selenide.WebDriverRunner.*;
 
+/**
+ * Родительский класс для тестов (методы BeforeEach и AfterEach)
+ */
 public class BaseTests {
     /**
      * Объект Listeners в зависимости от настройки в проперти или null
      */
     private final WebDriverListener listener = Listeners.getListener();
 
+    /**
+     * Настройка опций браузера и листенера перед каждым тестом
+     */
     @BeforeEach
     public void options() {
         Configuration.timeout=Long.parseLong(TestData.props.defaultTimeoutImplicitMs());
@@ -38,15 +44,14 @@ public class BaseTests {
 //        MutableCapabilities capabilities = new MutableCapabilities();  // new
 //        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 //        Configuration.browserCapabilities = capabilities;
-
-//        System.setProperty("webdriver.chrome.driver", System.getenv("drivers/"));
-//        WebDriver driver;
-//        driver = new ChromeDriver(options);
-//        setWebDriver(driver);
     }
 
+    /**
+     * Закрытие окна браузера после каждого теста,
+     * необходимо при повторе теста по параметризованным производителям
+     */
     @AfterEach
     public void close() {
-        closeWindow();  // для повтора теста по производителям
+        closeWindow();
     }
 }

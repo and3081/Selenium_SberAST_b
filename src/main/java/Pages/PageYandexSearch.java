@@ -14,11 +14,21 @@ public class PageYandexSearch extends BasePage {
      */
     public String XPATH_ICON_YANDEX_MARKET = "//a[@data-id='market']";
 
+    /**
+     * Шаг Проверить title страницы
+     * @param step номер шага для аллюра
+     * @return свой PO
+     */
     public PageYandexSearch checkYandexTitle(String step) {
         checkTitle(step, TITLE_YANDEX);
         return this;
     }
 
+    /**
+     * Шаг Перейти по иконке на Яндекс Маркет
+     * @param step номер шага для аллюра
+     * @return свой PO
+     */
     @Step("step {step}. Перейти по иконке на Яндекс Маркет")  // step 3
     public PageYandexSearch clickYandexMarketAndSwitch(String step) {
         waitRealClick($x(XPATH_ICON_YANDEX_MARKET).shouldBe(visible, enabled));

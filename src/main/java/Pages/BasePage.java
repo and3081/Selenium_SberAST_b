@@ -14,19 +14,25 @@ import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
+/**
+ * Класс родительского PO (общие xpath и методы, методы создания PO страниц)
+ */
 public class BasePage {
     /**
-     * Значение явного ожидания из проперти
+     * Значение явного ожидания ms из проперти
      */
     public long timeoutExplicitMs = Long.parseLong(TestData.props.defaultTimeoutExplicitMs());
     /**
-     * Привязанный объект явных ожиданий
+     * Объект явных ожиданий (для метода реального клика)
      */
     private final WebDriverWait waitClick = new WebDriverWait(getWebDriver(), Duration.ofMillis(timeoutExplicitMs));
 
+    /**
+     * xPath title страницы
+     */
     public String XPATH_TITLE = "//head/title";
     /**
-     * title базовой страницы
+     * title базовой страницы Яндекс
      */
     public String TITLE_YANDEX = "Яндекс";
     /**
@@ -35,27 +41,49 @@ public class BasePage {
     public String TITLE_YANDEX_MARKET =
             "Интернет-магазин Яндекс.Маркет — покупки с быстрой доставкой";
 
+    /**
+     * Шаг Проверить title страницы
+     * @param step  номер шага для аллюра
+     * @param title проверочный title
+     */
     @Step("step {step}. Проверить title страницы '{title}'")  // step 2/4
     public void checkTitle(String step, String title) {
         $x(XPATH_TITLE).shouldHave(attribute("textContent", title));
     }
 
+    /**
+     * Максимизация окна браузера
+     * static
+     */
     public static void maxWindow() { getWebDriver().manage().window().maximize(); }
 
+    /**
+     * Шаг Открыть браузер и стартовую страницу Яндекс, максимизация окна браузера
+     * static
+     * @param step  номер шага для аллюра
+     * @return PO PageYandexSearch
+     */
     @Step("step {step}. Открыть браузер и стартовую страницу Яндекс")  // step 1
     public static PageYandexSearch openFirstPageYandexSearch(String step) {
         open(TestData.props.baseUrlYandex());
         maxWindow();
         return page(PageYandexSearch.class); }
 
+    /**
+     * @return PO PageYandexMarketMain
+     */
     public PageYandexMarketMain nextPageYandexMarketMain() { return page(PageYandexMarketMain.class); }
 
+    /**
+     * @return PO PageYandexMarketChoice
+     */
     public PageYandexMarketChoice nextPageYandexMarketChoice() { return page(PageYandexMarketChoice.class); }
 
     /**
      * Ожидание и выполнение реального клика, при ElementClickInterceptedException (перекрытие элемента)
      * отправляется ESC в фокус для попытки снятия попапа
-     * @param el       элемент для клика
+     * @param el  элемент для клика
+     * @return true- клик сделан
      */
     public boolean waitRealClick(SelenideElement el) {
         boolean[] isClick = new boolean[]{false};

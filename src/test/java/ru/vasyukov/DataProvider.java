@@ -13,10 +13,9 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 public class DataProvider {
     /**
      * Метод-провайдер для тест-кейса testYandexMarketChoice()
-     * @return  стрим аргументов: список (цена от, цена до),
-     *                            список производителей
-     *                            список (количество Просмотра для v.1 (на выбор)
-     *                                    количество Просмотра для v.2 (удвоенное при Просмотреть еще))
+     * @return  стрим аргументов: список (Раздел и Подраздел каталога),
+     *                            параметризация производителей
+     *                            количество Просмотра для старой версии (48 для ускорения тестирования)
      */
     protected static Stream<Arguments> providerYandexMarket() {
         List<String> listChapters = List.of("Электроника", "Смартфоны");
