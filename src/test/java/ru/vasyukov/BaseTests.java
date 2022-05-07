@@ -4,9 +4,7 @@ import Custom.listeners.Listeners;
 import Custom.properties.TestData;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.events.WebDriverListener;
 
@@ -21,7 +19,7 @@ public class BaseTests {
     @BeforeEach
     public void options() {
         Configuration.timeout=Long.parseLong(TestData.props.defaultTimeoutImplicitMs());
-        //addListener(listener);
+        if (listener!=null) addListener(listener);
         if (TestData.props.headlessMode() !=null) Configuration.headless = true;
         if (TestData.props.dontCloseBrowser() !=null) Configuration.holdBrowserOpen = true;
         if (TestData.props.typeBrowser() !=null)
