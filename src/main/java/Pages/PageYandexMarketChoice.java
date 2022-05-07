@@ -140,11 +140,13 @@ public class PageYandexMarketChoice extends BasePage {
             //   клик в выборке
             //   серое окно: появляется доп.дочерний временный div (или несколько)
             //   результат:  доп.временный div убирается, снова 1 дочерний div
-            $$x(XPATH_CHOICE_PROGRESS1).shouldBe(sizeGreaterThan(1)).shouldBe(size(1));
+            $$x(XPATH_CHOICE_PROGRESS1).shouldBe(sizeGreaterThan(1));
+            $$x(XPATH_CHOICE_PROGRESS1).shouldBe(size(1));
         } else {
             // пример новая версия изменение выборки:
             // аналогично, но доп. div появляется сестринский, а не дочерний
-            $$x(XPATH_CHOICE_PROGRESS2).shouldBe(sizeGreaterThan(1)).shouldBe(size(1));
+            $$x(XPATH_CHOICE_PROGRESS2).shouldBe(sizeGreaterThan(1));
+            $$x(XPATH_CHOICE_PROGRESS2).shouldBe(size(1));
         }
         return this;
     }
