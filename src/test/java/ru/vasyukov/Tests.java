@@ -1,7 +1,5 @@
 package ru.vasyukov;
 
-import Custom.properties.TestData;
-import Pages.PageYandexSearch;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -9,7 +7,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 
 import static Pages.BasePage.openFirstPageYandexSearch;
-import static com.codeborne.selenide.Selenide.open;
 
 /**
  * Класс тест-кейсов с настраиваемыми листенерами в проперти:
@@ -27,26 +24,26 @@ public class Tests extends BaseTests {
     /**
      * Тест-кейс выборки и поиска в Яндекс-маркет (версии v.1 и v.2)
      * параметры поставляются провайдером данных providerYandexMarket()
-     * @param factories  список названий Производителей
+     * @param factory  список названий Производителей
      * @param countForOld     количество Просмотра для v.1 (на выбор) и v.2 (удвоенное при Просмотреть еще)
      */
     @DisplayName("Тестирование выборки в Яндекс-маркет")
     @ParameterizedTest(name = "{displayName} {arguments}")
     @MethodSource("ru.vasyukov.DataProvider#providerYandexMarket")
-    public void testYandexMarketChoice(List<String> itemsNameMenu, List<String> factories, String countForOld) {
-        openFirstPageYandexSearch()
-                .checkYandexTitle()
-                .clickYandexMarketAndSwitch().nextPageYandexMarketMain()
-                .checkYandexMarketTitle()
-                .clickCatalogButton()
-                .clickItemCatalog(itemsNameMenu.get(0))
-                .checkHeadChapterCatalog(itemsNameMenu.get(0))
-                .clickItemCatalog(itemsNameMenu.get(1)).nextPageYandexMarketChoice()
-                .checkNameInCrumbs(itemsNameMenu.get(1))
-                .clickAllFactoriesButton()
-                .inputFactorySearch(factories.get(0))
-                .clickFactoryItemAndWait(factories.get(0))
-                .selectChoiceCountViewAndWaitV1(countForOld)
-                .checkAllPagesArticlesName(factories.get(0));
+    public void testYandexMarketChoice(List<String> itemsNameMenu, String factory, String countForOld) {
+        openFirstPageYandexSearch("1")
+                .checkYandexTitle("2")
+                .clickYandexMarketAndSwitch("3").nextPageYandexMarketMain()
+                .checkYandexMarketTitle("4")
+                .clickCatalogButton("5")
+                .clickItemCatalog("6", itemsNameMenu.get(0))
+                .checkHeadChapterCatalog("7", itemsNameMenu.get(0))
+                .clickItemCatalog("8", itemsNameMenu.get(1)).nextPageYandexMarketChoice()
+                .checkNameInCrumbs("9", itemsNameMenu.get(1))
+                .clickAllFactoriesButton("10")
+                .inputFactorySearch("11", factory)
+                .clickFactoryItemAndWait("12", factory)
+                .selectChoiceCountViewAndWaitForOld("13", countForOld)
+                .checkAllPagesArticlesName("14", factory);
     }
 }

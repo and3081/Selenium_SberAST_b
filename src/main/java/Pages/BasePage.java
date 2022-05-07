@@ -38,7 +38,7 @@ public class BasePage {
 
     public static void maxWindow() { getWebDriver().manage().window().maximize(); }
 
-    public static PageYandexSearch openFirstPageYandexSearch() {
+    public static PageYandexSearch openFirstPageYandexSearch(String step) {
         open(TestData.props.baseUrlYandex());
         maxWindow();
         return page(PageYandexSearch.class); }

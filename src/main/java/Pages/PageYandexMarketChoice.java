@@ -57,34 +57,34 @@ public class PageYandexMarketChoice extends BasePage {
     public String XPATH_PAGINATION_BUTTONS_1 = "//a[@aria-label[contains(.,'траница')]]";
     public String XPATH_PAGINATION_BUTTONS_2 = "//div[@data-auto[contains(.,'pagination')]]";
 
-    public PageYandexMarketChoice checkNameInCrumbs(String name) {
+    public PageYandexMarketChoice checkNameInCrumbs(String step, String name) {
         $$x(XPATH_CRUMBS).shouldBe(sizeGreaterThanOrEqual(3)).get(2)
                 .should(be(visible), have(exactText(name)));
         checkVersionPage();
         return this;
     }
 
-    public PageYandexMarketChoice clickAllFactoriesButton() {
+    public PageYandexMarketChoice clickAllFactoriesButton(String step) {
         waitRealClick($x((versionPage==1) ? XPATH_ALL_FACTORIES_BUTTON_1 : XPATH_ALL_FACTORIES_BUTTON_2)
                 .shouldBe(visible, enabled));
         return this;
     }
 
-    public PageYandexMarketChoice inputFactorySearch(String nameFactory) {
+    public PageYandexMarketChoice inputFactorySearch(String step, String nameFactory) {
         $x((versionPage==1) ? XPATH_FACTORIES_SEARCH_1 : XPATH_FACTORIES_SEARCH_2)
                 .shouldBe(visible, enabled).setValue(nameFactory).pressEnter();
         return this;
     }
 
-    public PageYandexMarketChoice clickFactoryItemAndWait(String nameFactory) {
+    public PageYandexMarketChoice clickFactoryItemAndWait(String step, String nameFactory) {
         waitRealClick($x(XPATH_FACTORIES_ITEM)
                 .should(be(visible), be(enabled), have(exactText(nameFactory))));
         waitEndChoice();
         return this;
     }
 
-    public PageYandexMarketChoice selectChoiceCountViewAndWaitV1(String count) {
-        if (versionPage == 1) {
+    public PageYandexMarketChoice selectChoiceCountViewAndWaitForOld(String step, String count) {
+        if (versionPage==1 && $$x(XPATH_COUNT_ITEMS1).size()>0) {  // м.не быть кнопки if все на 1 экране
             waitRealClick($x(XPATH_COUNT_ITEMS1).shouldBe(visible, enabled));
             waitRealClick($$x(XPATH_COUNT_ITEMS_OPTIONS1).shouldBe(sizeGreaterThan(0))
                     .findBy(text(count)).shouldBe(visible, enabled));
@@ -93,7 +93,7 @@ public class PageYandexMarketChoice extends BasePage {
         return this;
     }
 
-    public PageYandexMarketChoice checkAllPagesArticlesName(String factory) {
+    public PageYandexMarketChoice checkAllPagesArticlesName(String step, String factory) {
         int i = 100;  // предохранитель
         do { checkSearchedArticlesName(factory);
         } while ((--i >0) && isClickButtonForwardAndWait());
@@ -109,10 +109,10 @@ public class PageYandexMarketChoice extends BasePage {
     public boolean isClickButtonForwardAndWait() {
         ElementsCollection listFiltered;
         if (versionPage == 1) {
-            listFiltered = $$x(XPATH_PAGINATION_BUTTONS_1).shouldBe(sizeGreaterThan(0))
+            listFiltered = $$x(XPATH_PAGINATION_BUTTONS_1)  //.shouldBe(sizeGreaterThan(0))
                     .filterBy(attribute("aria-label", "Следующая страница"));
         } else {
-            listFiltered = $$x(XPATH_PAGINATION_BUTTONS_2).shouldBe(sizeGreaterThan(0))
+            listFiltered = $$x(XPATH_PAGINATION_BUTTONS_2)  //.shouldBe(sizeGreaterThan(0))  м.не быть if 1 экран
                     .filterBy(attribute("data-auto", "pagination-next"));
         }
         if (listFiltered.size()>0 && waitRealClick(listFiltered.get(0)
