@@ -7,6 +7,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -19,7 +21,7 @@ public class BasePage {
     /**
      * Привязанный объект явных ожиданий
      */
-    private final WebDriverWait waitClick = new WebDriverWait(getWebDriver(), 2L);
+    private final WebDriverWait waitClick = new WebDriverWait(getWebDriver(), Duration.ofMillis(timeoutExplicitMs));
 
     public String XPATH_TITLE = "//head/title";
     /**

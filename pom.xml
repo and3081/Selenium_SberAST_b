@@ -12,12 +12,13 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <junit.jupiter.version>5.7.0-M1</junit.jupiter.version>
-        <seleniumhq.selenium>3.141.59</seleniumhq.selenium>
-        <qameta.allure>2.13.6</qameta.allure>
+        <seleniumhq.selenium>4.1.4</seleniumhq.selenium>
+        <selenium.support>4.1.4</selenium.support>
+        <qameta.allure>2.17.3</qameta.allure>
         <aspectj.version>1.9.4</aspectj.version>
         <allure.version>2.13.0</allure.version>
-        <selenide.version>5.5.0</selenide.version>
-        <owner.version>1.0.10</owner.version>
+        <selenide.version>6.4.0</selenide.version>
+        <owner.version>1.0.12</owner.version>
     </properties>
 
     <dependencies>
@@ -47,6 +48,13 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${seleniumhq.selenium}</version>
+        </dependency>
+
+        <!-- selenium WebDriverListener -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-support</artifactId>
+            <version>${selenium.support}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5 -->
