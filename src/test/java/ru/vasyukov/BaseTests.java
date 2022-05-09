@@ -47,11 +47,12 @@ public class BaseTests {
     }
 
     /**
-     * Закрытие окна браузера после каждого теста,
+     * Закрытие браузера после каждого теста,
      * необходимо при повторе теста по параметризованным производителям
      */
     @AfterEach
     public void close() {
-        closeWindow();
+        //closeWindow();  // holdBrowserOpen с этим не работает
+        closeWebDriver();
     }
 }
