@@ -1,8 +1,9 @@
-package ru.vasyukov;
+package ru.vasyukov.Test;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import ru.vasyukov.Hooks.WebHooks;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ import static Pages.BasePage.openFirstPageYandexSearch;
  * 10. Убедится что в выборку попали только iPhone. Если страниц несколько – проверить все.
  * 11. Тест должен работать для любого производителя
  */
-public class Tests extends BaseTests {
+public class Tests extends WebHooks {
     /**
      * Тест-кейс выборки и поиска в Яндекс-маркет (версии v.1 и v.2)
      * параметры поставляются провайдером данных providerYandexMarket()
@@ -41,7 +42,7 @@ public class Tests extends BaseTests {
      */
     @DisplayName("Тестирование выборки в Яндекс-маркет")
     @ParameterizedTest(name = "{displayName} {arguments}")
-    @MethodSource("ru.vasyukov.DataProvider#providerYandexMarket")
+    @MethodSource("ru.vasyukov.Test.DataProvider#providerYandexMarket")
     public void testYandexMarketChoice(List<String> itemsNameMenu, String factory, String countForOld) {
         openFirstPageYandexSearch("1")
                 .checkYandexTitle("2")
