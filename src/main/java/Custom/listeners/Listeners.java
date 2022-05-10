@@ -24,6 +24,10 @@ public class Listeners implements WebDriverListener {
      */
     private static final String listenerType = TestData.props.listenerType();
     /**
+     * Режим скриншотов вокруг из проперти
+     */
+    private static final String listenerAround = TestData.props.listenerAround();
+    /**
      * Mode скриншотов для листенера с элементами из проперти
      */
     private static final String listenerModeElements = TestData.props.listenerModeElements();
@@ -39,6 +43,18 @@ public class Listeners implements WebDriverListener {
             case "elements": return listenerWebElement;
         }
         return null;
+    }
+
+    /**
+     * Геттер одного из вариантов Вокруг в зависимости от настройки проперти
+     * @return 1 перед действием, 2 вокруг, 3 после действия (+click перед)
+     */
+    private static int getListenerAround() {
+        switch (listenerAround) {
+            case "before": return 1;
+            case "after": return 3;
+        }
+        return 2;
     }
 
     /**
@@ -87,8 +103,10 @@ public class Listeners implements WebDriverListener {
      * @param args   аргументы метода назначения
      */
     private static void actionBeforeWebDriver(WebDriver driver, Method method, Object[] args) {
-        lastListenedDriver = driver;
-        Screenshoter.getScreenDriver("Перед", driver, method.getName(), "args:  ", Arrays.toString(args));
+        if (getListenerAround()<=2) {
+            lastListenedDriver = driver;
+            Screenshoter.getScreenDriver("Перед", driver, method.getName(), "args:  ", Arrays.toString(args));
+        }
     }
 
     /**
@@ -99,9 +117,11 @@ public class Listeners implements WebDriverListener {
      * @param result возврат метода назначения (null для void)
      */
     private static void actionAfterWebDriver(WebDriver driver, Method method, Object[] args, Object result) {
-        lastListenedDriver = driver;
-        Screenshoter.getScreenDriver("После", driver, method.getName(), "return:",
-                (result==null) ? "void" :result.toString());
+        if (getListenerAround()>=2) {
+            lastListenedDriver = driver;
+            Screenshoter.getScreenDriver("После", driver, method.getName(), "return:",
+                    (result == null) ? "void" : result.toString());
+        }
     }
 
     /**
@@ -112,15 +132,18 @@ public class Listeners implements WebDriverListener {
      * @param args   аргументы метода назначения
      */
     private static void actionBeforeWebElement(WebDriver lastListenedDriver, WebElement el, Method method, Object[] args) {
-        // в таком порядке ! чтобы в режиме both наведение тут не крашило наведение в тестах
-        if (lastListenedDriver!=null && getListenerModeElements()!=2) {
-            new Actions(lastListenedDriver).moveToElement(el).perform();
-            Screenshoter.getScreenDriver("Перед", lastListenedDriver, method.getName(), "args:  ",
-                    Arrays.toString(args));
-        }
-        if (lastListenedDriver==null || getListenerModeElements()!=1) {
-            Screenshoter.getScreenElement("Перед", el, method.getName(), "args:  ",
-                    Arrays.toString(args));
+        // метод click- всегда, т.к.полсе его м.не быть из-за смены страницы
+        if (getListenerAround()<=2 || method.getName().equals("click")) {
+            // в таком порядке ! чтобы в режиме both наведение тут не крашило наведение в тестах
+            if (lastListenedDriver != null && getListenerModeElements() != 2) {
+                new Actions(lastListenedDriver).moveToElement(el).perform();
+                Screenshoter.getScreenDriver("Перед", lastListenedDriver, method.getName(), "args:  ",
+                        Arrays.toString(args));
+            }
+            if (lastListenedDriver == null || getListenerModeElements() != 1) {
+                Screenshoter.getScreenElement("Перед", el, method.getName(), "args:  ",
+                        Arrays.toString(args));
+            }
         }
     }
 
@@ -133,18 +156,20 @@ public class Listeners implements WebDriverListener {
      * @param result возврат метода назначения (null для void)
      */
     private static void actionAfterWebElement(WebDriver lastListenedDriver, WebElement el, Method method, Object[] args, Object result) {
-        // если страница быстро среагирует на действие над элементом (напр заменится по клику),
-        // то на момент попытки afterМетода el уже не существует, afterМетод проигнорится !
+        if (getListenerAround()>=2) {
+            // если страница быстро среагирует на действие над элементом (напр заменится по клику),
+            // то на момент попытки afterМетода el уже не существует, afterМетод проигнорится !
 
-        // в таком порядке ! чтобы в режиме both наведение тут не крашило наведение в тестах
-        if (lastListenedDriver!=null && getListenerModeElements()!=2) {
-            new Actions(lastListenedDriver).moveToElement(el).perform();
-            Screenshoter.getScreenDriver("После", lastListenedDriver, method.getName(), "return:",
-                    (result == null) ? "void" : result.toString());
-        }
-        if (lastListenedDriver==null || getListenerModeElements()!=1) {
-            Screenshoter.getScreenElement("После", el, method.getName(), "return:",
-                    (result == null) ? "void" : result.toString());
+            // в таком порядке ! чтобы в режиме both наведение тут не крашило наведение в тестах
+            if (lastListenedDriver != null && getListenerModeElements() != 2) {
+                new Actions(lastListenedDriver).moveToElement(el).perform();
+                Screenshoter.getScreenDriver("После", lastListenedDriver, method.getName(), "return:",
+                        (result == null) ? "void" : result.toString());
+            }
+            if (lastListenedDriver == null || getListenerModeElements() != 1) {
+                Screenshoter.getScreenElement("После", el, method.getName(), "return:",
+                        (result == null) ? "void" : result.toString());
+            }
         }
     }
 

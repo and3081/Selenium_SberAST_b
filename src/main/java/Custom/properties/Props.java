@@ -32,6 +32,9 @@ public interface Props extends Config {
     @Key("listener.type")
     String listenerType();
 
+    @Key("listener.around")
+    String listenerAround();
+
     @Key("listener.mode.elements")
     String listenerModeElements();
 
@@ -43,4 +46,7 @@ public interface Props extends Config {
 
     @Key("headless.mode")
     String headlessMode();
+
+    @Key("remout.url")
+    String remoutUrl();
 }
