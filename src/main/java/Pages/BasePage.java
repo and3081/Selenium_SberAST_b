@@ -92,6 +92,8 @@ public class BasePage {
             } catch (ElementClickInterceptedException e) {
                 actions().sendKeys(Keys.ESCAPE).perform();  // попытка снять попап
                 return false;
+            } catch (Exception e) {
+                return false;
             } isClick[0] = true; return true; });
         return isClick[0];
     }

@@ -29,15 +29,6 @@ public interface Props extends Config {
     @Key("default.timeout.explicit.ms")
     String defaultTimeoutExplicitMs();
 
-    @Key("listener.type")
-    String listenerType();
-
-    @Key("listener.around")
-    String listenerAround();
-
-    @Key("listener.mode.elements")
-    String listenerModeElements();
-
     @Key("type.browser")
     String typeBrowser();
 
