@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>Selenide_YMarket_b</artifactId>
+    <artifactId>Selenide_SberAST_b</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <junit.jupiter.version>5.7.0-M1</junit.jupiter.version>
-        <seleniumhq.selenium>4.1.4</seleniumhq.selenium>
-        <selenium.support>4.1.4</selenium.support>
+        <seleniumhq.selenium>4.1.1</seleniumhq.selenium>
+        <selenium.support>4.1.1</selenium.support>
         <qameta.allure>2.17.3</qameta.allure>
         <aspectj.version>1.9.4</aspectj.version>
         <allure.version>2.17.3</allure.version>
