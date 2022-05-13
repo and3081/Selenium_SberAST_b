@@ -38,7 +38,7 @@ public class BasePage {
      * @param title проверочный title
      */
     @Step("step {step}. Проверить фрагмент title страницы '{title}'")  // step 2
-    public void checkTitleFragment(String step, String title) {
+    public void checkTitleFragment(int step, String title) {
         $x(XPATH_TITLE).shouldHave(match("Проверка фрагмента title",
                 (el)-> el.getAttribute("textContent").contains(title)));
     }
@@ -56,7 +56,7 @@ public class BasePage {
      * @return PO PageYandexSearch
      */
     @Step("step {step}. Открыть браузер и стартовую страницу Сбер.Ast")  // step 1
-    public static PageSberAstMain openFirstPageSberAst(String step) {
+    public static PageSberAstMain openFirstPageSberAst(int step) {
         open(TestData.props.baseUrlSberAst());
         maxWindow();
         return page(PageSberAstMain.class); }

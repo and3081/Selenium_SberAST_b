@@ -43,9 +43,9 @@ public class Tests extends WebHooks {
     @ParameterizedTest(name = "{displayName} {arguments}")
     @MethodSource("ru.vasyukov.Test.DataProvider#providerSberAst")
     public void testSberAstChoice(String search) {
-        openFirstPageSberAst("1")
-                .checkSberAstTitle("2")
-                .inputSearchField("3", search)
-                .collectPageResults("5", 600000.0, "RUB", "44-ФЗ");
+        openFirstPageSberAst(1)
+                .checkSberAstTitle(2)
+                .inputSearchField(3, search)
+                .collectAllPageResults(4, 600000.0, "RUB", "44-ФЗ", 120, 10);
     }
 }
