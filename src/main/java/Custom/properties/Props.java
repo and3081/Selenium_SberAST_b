@@ -14,8 +14,8 @@ import org.aeonbits.owner.Config;
         "file:props.properties"
 })
 public interface Props extends Config {
-    @Key("base.url.yandex")
-    String baseUrlYandex();
+    @Key("base.url.sber.ast")
+    String baseUrlSberAst();
 
     @Key("webdriver.chrome.local.path")
     String webdriverChromeLocalPath();

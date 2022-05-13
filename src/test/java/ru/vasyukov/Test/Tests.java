@@ -5,9 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.vasyukov.Hooks.WebHooks;
 
-import java.util.List;
-
-import static Pages.BasePage.openFirstPageYandexSearch;
+import static Pages.BasePage.openFirstPageSberAst;
 
 /**
  * Класс тест-кейсов
@@ -39,27 +37,15 @@ public class Tests extends WebHooks {
     /**
      * Тест-кейс выборки и поиска в Яндекс-маркет (версии v.1 и v.2)
      * параметры поставляются провайдером данных providerYandexMarket()
-     * @param itemsNameMenu  список названий - Раздел и Подраздел каталога
-     * @param factory        название Производителя (тест повторяется для разных производителей)
-     * @param countForOld    (для старой версии) количество Просмотра (48 для ускорения тестирования)
+     * @param search
      */
-    @DisplayName("Тестирование выборки в Яндекс-маркет")
+    @DisplayName("Тестирование выборки в Сбер-АСТ")
     @ParameterizedTest(name = "{displayName} {arguments}")
-    @MethodSource("ru.vasyukov.Test.DataProvider#providerYandexMarket")
-    public void testYandexMarketChoice(List<String> itemsNameMenu, String factory, String countForOld) {
-        openFirstPageYandexSearch("1")
-                .checkYandexTitle("2")
-                .clickYandexMarketAndSwitch("3").nextPageYandexMarketMain()
-                .checkYandexMarketTitle("4")
-                .clickCatalogButton("5")
-                .clickItemCatalog("6", itemsNameMenu.get(0))
-                .checkHeadChapterCatalog("7", itemsNameMenu.get(0))
-                .clickItemCatalog("8", itemsNameMenu.get(1)).nextPageYandexMarketChoice()
-                .checkNameInCrumbs("9", itemsNameMenu.get(1))
-                .clickAllFactoriesButton("10")
-                .inputFactorySearch("11", factory)
-                .clickFactoryItemAndWait("12", factory)
-                .selectChoiceCountViewAndWaitForOld("13", countForOld)
-                .checkAllPagesArticlesName("14", factory);
+    @MethodSource("ru.vasyukov.Test.DataProvider#providerSberAst")
+    public void testSberAstChoice(String search) {
+        openFirstPageSberAst("1")
+                .checkSberAstTitle("2")
+                .inputSearchField("3", search)
+                .collectPageResults("5", 600000.0, "RUB", "44-ФЗ");
     }
 }

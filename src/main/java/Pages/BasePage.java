@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.attribute;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
@@ -31,24 +31,16 @@ public class BasePage {
      * xPath title страницы
      */
     public String XPATH_TITLE = "//head/title";
-    /**
-     * title базовой страницы Яндекс
-     */
-    public String TITLE_YANDEX = "Яндекс";
-    /**
-     * title базовой страницы Яндекс Маркет
-     */
-    public String TITLE_YANDEX_MARKET =
-            "Интернет-магазин Яндекс.Маркет — покупки с быстрой доставкой";
 
     /**
      * Шаг Проверить title страницы
      * @param step  номер шага для аллюра
      * @param title проверочный title
      */
-    @Step("step {step}. Проверить title страницы '{title}'")  // step 2/4
-    public void checkTitle(String step, String title) {
-        $x(XPATH_TITLE).shouldHave(attribute("textContent", title));
+    @Step("step {step}. Проверить фрагмент title страницы '{title}'")  // step 2
+    public void checkTitleFragment(String step, String title) {
+        $x(XPATH_TITLE).shouldHave(match("Проверка фрагмента title",
+                (el)-> el.getAttribute("textContent").contains(title)));
     }
 
     /**
@@ -63,21 +55,11 @@ public class BasePage {
      * @param step  номер шага для аллюра
      * @return PO PageYandexSearch
      */
-    @Step("step {step}. Открыть браузер и стартовую страницу Яндекс")  // step 1
-    public static PageYandexSearch openFirstPageYandexSearch(String step) {
-        open(TestData.props.baseUrlYandex());
+    @Step("step {step}. Открыть браузер и стартовую страницу Сбер.Ast")  // step 1
+    public static PageSberAstMain openFirstPageSberAst(String step) {
+        open(TestData.props.baseUrlSberAst());
         maxWindow();
-        return page(PageYandexSearch.class); }
-
-    /**
-     * @return PO PageYandexMarketMain
-     */
-    public PageYandexMarketMain nextPageYandexMarketMain() { return page(PageYandexMarketMain.class); }
-
-    /**
-     * @return PO PageYandexMarketChoice
-     */
-    public PageYandexMarketChoice nextPageYandexMarketChoice() { return page(PageYandexMarketChoice.class); }
+        return page(PageSberAstMain.class); }
 
     /**
      * Ожидание и выполнение реального клика, при ElementClickInterceptedException (перекрытие элемента)
