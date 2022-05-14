@@ -34,6 +34,10 @@ public class BasePage {
      */
     protected static Actions actions;
 
+    /**
+     * Инициализация объектов
+     * @param driver веб-драйвер
+     */
     private static void init(WebDriver driver) {
         BasePage.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofMillis(timeoutExplicitMs));
@@ -41,7 +45,7 @@ public class BasePage {
     }
 
     /**
-     * Шаг Открыть стартовую страницу Сбер-АСТ
+     * Шаг Инициализация и Открытие стартовой страницы Сбер-АСТ
      * static
      * @param step   номер шага для аллюра
      * @param driver веб-драйвер
@@ -80,8 +84,7 @@ public class BasePage {
     }
 
     /**
-     * Работа с полем ввода: клик для фокуса, очистка, ввод текста
-     * Клик проверяется на перекрытие (с попыткой снятия попапа)
+     * Работа с полем ввода: клик для фокуса, очистка, ввод текста, Enter
      * @param el   элемент ввода
      * @param text текст для ввода
      */

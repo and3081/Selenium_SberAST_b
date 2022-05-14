@@ -16,8 +16,8 @@ import org.openqa.selenium.support.events.WebDriverListener;
 import java.time.Duration;
 
 /**
- * Родительский класс для тестов:
- *   настройка опций браузера и листенера первый раз,
+ * Родительский класс для тестов: настройка опций браузера и листенера,
+ * открытие/закрытие браузера Chrome или Edge (настройки в проперти)
  *   методы BeforeEach и AfterEach
  */
 public class WebHooks {
