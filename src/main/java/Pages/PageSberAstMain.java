@@ -4,15 +4,12 @@ import Custom.Json.MyJson;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.By;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
 
 /**
  * Page класс страницы https://www.sberbank-ast.ru/
@@ -86,7 +83,7 @@ public class PageSberAstMain extends BasePage {
      */
     @Step("step {step}. Поиск '{text}'")  // step 3
     public PageSberAstMain inputSearchField(int step, String text) {
-        $x(XPATH_SEARCH_FIELD).shouldBe(visible, enabled).setValue(text).pressEnter();
+        waitVisibleInputEnter(XPATH_SEARCH_FIELD, text, "Поиск");
         return this;
     }
 
@@ -130,16 +127,14 @@ public class PageSberAstMain extends BasePage {
     public List<Map<String, String>> collectPageResults(int step, int subStep) {
         waitEndProgress();
         List<Map<String, String>> list = new ArrayList<>();
-        $$x(XPATH_RESULTS)
-                .shouldBe(sizeGreaterThan(0))
-                .asDynamicIterable()
+        waitPresenceList(XPATH_RESULTS, "Поиск позиций")
                 .forEach(el-> list.add(Map.of(
-                        "price", el.$x(XPATH_ITEM_AMOUNT).getText().replace(" ", ""),
-                        "currency", el.$x(XPATH_ITEM_CURRENCY).getText(),
-                        "law", el.$x(XPATH_ITEM_LAW).getText(),
-                        "name", el.$x(XPATH_ITEM_NAME).getText(),
-                        "org", el.$x(XPATH_ITEM_ORG).getText(),
-                        "code", el.$x(XPATH_ITEM_CODE).getText())));
+                        "price", el.findElement(By.xpath(XPATH_ITEM_AMOUNT)).getText().replace(" ", ""),
+                        "currency", el.findElement(By.xpath(XPATH_ITEM_CURRENCY)).getText(),
+                        "law", el.findElement(By.xpath(XPATH_ITEM_LAW)).getText(),
+                        "name", el.findElement(By.xpath(XPATH_ITEM_NAME)).getText(),
+                        "org", el.findElement(By.xpath(XPATH_ITEM_ORG)).getText(),
+                        "code", el.findElement(By.xpath(XPATH_ITEM_CODE)).getText())));
         return list;
     }
 
@@ -195,8 +190,8 @@ public class PageSberAstMain extends BasePage {
      * Ожидание окончания прогресса выборки/поиска
      */
     public void waitEndProgress() {
-        $x(XPATH_PROGRESS)
-                .shouldBe(exist, attribute("style", "display: none;"));
+        waitXpathAttributeContain(XPATH_PROGRESS, "style", "display: none;",
+                "Окончание прогресса");
     }
 
     /**
@@ -205,9 +200,9 @@ public class PageSberAstMain extends BasePage {
      * @return true- кнопка актуальна (есть следующая страница), клик выполнен
      */
     public boolean clickNextPage(int nextNumber) {
-        String attr = $x(XPATH_NEXT_PAGE_BUTTON).shouldBe(exist).getAttribute("content");
+        String attr = waitVisibleXpath(XPATH_NEXT_PAGE_BUTTON, "next page").getAttribute("content");
         if (attr!=null && nextNumber == Integer.parseInt(attr)) {
-            $x(XPATH_NEXT_PAGE_BUTTON).shouldBe(visible, enabled).click();
+            waitVisibleClickableXpath(XPATH_NEXT_PAGE_BUTTON, "next page").click();
             return true;
         }
         return false;

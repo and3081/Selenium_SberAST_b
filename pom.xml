@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>Selenide_SberAST_b</artifactId>
+    <artifactId>Selenium_SberAST_b</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -17,7 +17,6 @@
         <qameta.allure>2.17.3</qameta.allure>
         <aspectj.version>1.9.4</aspectj.version>
         <allure.version>2.17.3</allure.version>
-        <selenide.version>6.4.0</selenide.version>
         <owner.version>1.0.12</owner.version>
         <json.version>20220320</json.version>
     </properties>
@@ -77,12 +76,6 @@
             <groupId>org.aeonbits.owner</groupId>
             <artifactId>owner</artifactId>
             <version>${owner.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>selenide</artifactId>
-            <version>${selenide.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.json/json -->

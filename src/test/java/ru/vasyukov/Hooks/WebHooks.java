@@ -2,15 +2,18 @@ package ru.vasyukov.Hooks;
 
 import Custom.listeners.Listeners;
 import Custom.properties.TestData;
-import com.codeborne.selenide.Configuration;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.openqa.selenium.support.events.WebDriverListener;
 
-import static com.codeborne.selenide.WebDriverRunner.*;
+import java.time.Duration;
 
 /**
  * Родительский класс для тестов:
@@ -19,52 +22,81 @@ import static com.codeborne.selenide.WebDriverRunner.*;
  */
 public class WebHooks {
     /**
+     * объект WebDriver
+     */
+    protected WebDriver driver;
+    /**
      * Объект Listeners в зависимости от настройки в проперти или null
      */
-    private static final WebDriverListener listener = Listeners.getListener();
-
-    // Настройка опций браузера и листенера первый раз
-    static {
-        Configuration.timeout = Long.parseLong(TestData.props.defaultTimeoutImplicitMs());
-        if (listener != null) addListener(listener);
-        if (TestData.props.headlessMode() != null) Configuration.headless = true;
-        if (TestData.props.dontCloseBrowser() != null) Configuration.holdBrowserOpen = true;
-        if (TestData.props.remoutUrl() != null) Configuration.remote = TestData.props.remoutUrl();
-
-        if ((TestData.props.typeBrowser() == null || TestData.props.typeBrowser().equals("chrome")) &&
-                TestData.props.webdriverChromeLocalPath() != null) {
-            System.setProperty("webdriver.chrome.driver", TestData.props.webdriverChromeLocalPath());
-            WebDriver driver = new ChromeDriver();
-            setWebDriver(driver);
-        } else if (TestData.props.typeBrowser() != null)
-            if (TestData.props.typeBrowser().equals("edge")) {
-                System.setProperty("webdriver.edge.driver", TestData.props.webdriverEdgeLocalPath());
-                WebDriver driver = new EdgeDriver();
-                setWebDriver(driver);
-            } else Configuration.browser = TestData.props.typeBrowser();
-        else Configuration.browser = "chrome";
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("start-maximized");  // устарел, use  getWebDriver().manage().window().maximize();
-//        DesiredCapabilities capabilities = new DesiredCapabilities();  // old
-//        MutableCapabilities capabilities = new MutableCapabilities();  // new
-//        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-//        Configuration.browserCapabilities = capabilities;
-    }
+    private final WebDriverListener listener = Listeners.getListener();
 
     /**
-     * перед каждым тестом (тут нет, open в тесте)
+     * Открытие браузера перед каждым тест-кейсом
      */
     @BeforeEach
-    public void openBrowser() {
+    @Step("step 1. Открытие браузера")
+    protected void openBrowsers() {
+        String typeBrowser = TestData.props.typeBrowser();
+        if (typeBrowser !=null && typeBrowser.equals("edge")) {
+            if (listener==null) driver = initEdge();
+            else driver = new EventFiringDecorator(listener).decorate(initEdge());
+        } else {
+            if (listener==null) driver = initChrome();
+            else driver = new EventFiringDecorator(listener).decorate(initChrome());
+        }
     }
 
     /**
-     * Закрытие браузера после каждого теста,
-     * необходимо при повторе теста по параметризованным производителям
+     * Закрытие браузера после каждого тест-кейса
      */
     @AfterEach
-    public void closeBrowser() {
-        //closeWindow();  // holdBrowserOpen с этим не работает
-        closeWebDriver();
+    @Step("step end. Закрытие браузера")
+    protected void closeBrowsers() {
+        if (driver != null && TestData.props.dontCloseBrowser() ==null) {
+            driver.quit();
+            driver = null;
+        }
+    }
+
+    /**
+     * Опции и открытие драйвера Chrome и его дефолт-настройки
+     * Путь к chromedriver.exe в сист.переменной CHROME_DRIVER
+     */
+    private WebDriver initChrome() {
+        System.setProperty("webdriver.chrome.driver",
+                System.getenv(TestData.props.webdriverChromeLocalPath())); //, "drivers/chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        if (TestData.props.headlessMode() !=null)
+            options.addArguments("--headless");
+        driver = new ChromeDriver(options);
+        setDriverDefaultSettings();
+        return driver;
+    }
+
+    /**
+     * Опции и открытие драйвера Edge и его дефолт-настройки
+     * Путь к msedgedriver.exe в сист.переменной EDGE_DRIVER
+     */
+    private WebDriver initEdge() {
+        System.setProperty("webdriver.edge.driver",
+                System.getenv(TestData.props.webdriverEdgeLocalPath())); //, "drivers/chromedriver.exe");
+        EdgeOptions options = new EdgeOptions();
+        if (TestData.props.headlessMode() !=null)
+            options.addArguments("--headless");
+        driver = new EdgeDriver(options);
+        setDriverDefaultSettings();
+        return driver;
+    }
+
+    /**
+     * Дефолт-настройки браузера: max окно, неявные ожидания, удаление куки
+     */
+    private void setDriverDefaultSettings() {
+        driver.manage().window().maximize();
+        long timeout = Long.parseLong(TestData.props.defaultTimeoutImplicitMs());
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(timeout));
+        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(timeout));
+        driver.manage().deleteAllCookies();
     }
 }

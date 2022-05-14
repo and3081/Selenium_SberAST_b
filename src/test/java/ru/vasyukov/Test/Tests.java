@@ -9,7 +9,7 @@ import static Pages.BasePage.openFirstPageSberAst;
 
 /**
  * Класс тест-кейсов
- * @author Васюков А.Ю.  GitHub  https://github.com/and3081/Selenide_SberAST_b
+ * @author Васюков А.Ю.  GitHub  https://github.com/and3081/Selenium_SberAST_b
  * @version 1.0
  * Описание тест-кейса:
  * 1. сайт https://www.sberbank-ast.ru госзакупки
@@ -49,7 +49,7 @@ public class Tests extends WebHooks {
     @MethodSource("ru.vasyukov.Test.DataProvider#providerSberAst")
     public void testSberAstChoice(String search, double price, String currency, String law,
                                   int maxCountView, int countChoice) {
-        openFirstPageSberAst(1)
+        openFirstPageSberAst(1, driver)
                 .checkSberAstTitle(2)
                 .inputSearchField(3, search)
                 .collectAllPageResults(4, price, currency, law, maxCountView, countChoice)
