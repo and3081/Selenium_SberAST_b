@@ -182,14 +182,14 @@ public class PageSberAstMain extends BasePage {
 
     /**
      * Подшаг Вывод инфо в названиях Step аллюра
-     * @param step номер шага для аллюра
-     * @param i     порядковый номер подшага
-     * @param name  название
-     * @param price цена
-     * @param code  код
+     * @param step    номер шага для аллюра
+     * @param subStep порядковый номер подшага
+     * @param name    название
+     * @param price   цена
+     * @param code    код
      */
     @Step("step {step}.{i}. {name}  Цена:{price}  Код:{code}")  // step 6
-    public void reportStep(int step, int i, String name, String price, String code) {}
+    public void reportStep(int step, int subStep, String name, String price, String code) {}
 
     /**
      * Ожидание окончания прогресса выборки/поиска
