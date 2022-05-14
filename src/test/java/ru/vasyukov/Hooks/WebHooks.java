@@ -34,7 +34,7 @@ public class WebHooks {
      * Открытие браузера перед каждым тест-кейсом
      */
     @BeforeEach
-    @Step("step 1. Открытие браузера")
+    @Step("step  . Открытие браузера")
     protected void openBrowsers() {
         String typeBrowser = TestData.props.typeBrowser();
         if (typeBrowser !=null && typeBrowser.equals("edge")) {

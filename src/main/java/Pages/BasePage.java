@@ -75,7 +75,7 @@ public class BasePage {
     public WebElement waitVisibleInputEnter(String xpath, String text, String message) {
         WebElement el = myAssert(() -> wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))),
                 "Ожидание поиска и видимости элемента исчерпано: " + message);
-        inputTextEnter(el, text, message);
+        inputTextEnter(el, text);
         return el;
     }
 
@@ -84,9 +84,8 @@ public class BasePage {
      * Клик проверяется на перекрытие (с попыткой снятия попапа)
      * @param el   элемент ввода
      * @param text текст для ввода
-     * @param message  доп.сообщение для ассерта
      */
-    public void inputTextEnter(WebElement el, String text, String message) {
+    public void inputTextEnter(WebElement el, String text) {
         el.click();
         el.clear();
         el.sendKeys(text+Keys.ENTER);
