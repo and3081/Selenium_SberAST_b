@@ -47,13 +47,13 @@ public class PageSberAstMain extends BasePage {
         return this;
     }
 
-    @Step("step {step}. Поиск {text}")  // step 3
+    @Step("step {step}. Поиск '{text}'")  // step 3
     public PageSberAstMain inputSearchField(int step, String text) {
         $x(XPATH_SEARCH_FIELD).shouldBe(visible, enabled).setValue(text).pressEnter();
         return this;
     }
 
-    @Step("step {step}. Сбор информации {price} {currency} {law} (позиций: {maxCountChoice})")  // step 4
+    @Step("step {step}. Сбор информации '{price}' '{currency}' '{law}' (позиций: {maxCountChoice})")  // step 4
     public PageSberAstMain collectAllPageResults(int step, double price, String currency, String law,
                                                  int maxCountView, int maxCountChoice) {
         int countView = 0, nextPageNumber = 1, subStep = 0;
@@ -106,7 +106,7 @@ public class PageSberAstMain extends BasePage {
         return this;
     }
 
-    @Step("step {step}. {i}. {name} \nЦена:{price} Код:{code}")  // step
+    @Step("step {step}.{i}. {name}  Цена:{price}  Код:{code}")  // step
     public void reportStep(int step, int i, String name, String price, String code) {}
 
     public void waitEndProgress() {

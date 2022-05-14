@@ -2,7 +2,6 @@ package ru.vasyukov.Test;
 
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -12,10 +11,11 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  */
 public class DataProvider {
     /**
-     * Метод-провайдер для тест-кейса testYandexMarketChoice()
-     * @return  стрим аргументов: список (Раздел и Подраздел каталога),
+     * Метод-провайдер для тест-кейса testSberAstChoice()
+     * @return  стрим аргументов: текст для поиска, больше цены, валюта,
+     *                            закон, макс.кол-во просмотра, количество для выборки
      */
     protected static Stream<Arguments> providerSberAst() {
-        return Stream.of(arguments("Страхование"));
+        return Stream.of(arguments("Страхование", 600000.0, "RUB", "44-ФЗ", 120, 10));
     }
 }

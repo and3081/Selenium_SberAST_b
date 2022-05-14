@@ -55,7 +55,7 @@ public class BasePage {
      * @param step  номер шага для аллюра
      * @return PO PageYandexSearch
      */
-    @Step("step {step}. Открыть браузер и стартовую страницу Сбер.Ast")  // step 1
+    @Step("step {step}. Открыть браузер и стартовую страницу Сбер-АСТ")  // step 1
     public static PageSberAstMain openFirstPageSberAst(int step) {
         open(TestData.props.baseUrlSberAst());
         maxWindow();

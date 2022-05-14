@@ -9,6 +9,18 @@ import static Pages.BasePage.openFirstPageSberAst;
 
 /**
  * Класс тест-кейсов
+ * @author Васюков А.Ю.  GitHub  https://github.com/and3081/Selenide_YMarket_b
+ * @version 1.0
+ * Описание тест-кейса:
+ * 1. сайт https://www.sberbank-ast.ru госзакупки
+ * 2. проверить title
+ * 3. запрос "Страхование"
+ * 4. вывести инфо о первых 10 заказах удовлетворяющих условиям:
+ *    цена > 600 тыс. руб,
+ *    тип Госзакупки по 44-ФЗ.
+ *    Проверять только первые 120 результатов в списке.
+ * 5. В инфо выводить: название, цену, номер (в консоль, в Step аллюра).
+ *
  * Настраиваемые листенеры в проперти:
  *       - какие типы методов скринить: драйвер, элементы, все варианты или отключить
  *       - какие выборочно по названиям методы скринить
@@ -18,35 +30,27 @@ import static Pages.BasePage.openFirstPageSberAst;
  *       В аллюре скрины подписаны- перед и после какого метода, аргументы и возврат метода
  *
  *       - выбор браузера в проперти для прогона тестов:  Chrome, Edge
- *
- * @author Васюков А.Ю.  GitHub  https://github.com/and3081/Selenide_YMarket_b
- * @version 1.0
- * Описание тест-кейса:
- * 1. Открыть браузер и развернуть на весь экран.
- * 2. Зайти на yandex.ru.
- * 3. Перейти в яндекс маркет
- * 4. Выбрать раздел Электроника
- * 5. Выбрать раздел Смартфоны
- * 6. Задать параметр «Производитель» Apple.
- * 8. Дождаться результатов поиска.
- * 9. Установить количество показываемых элементов на страницу 48
- * 10. Убедится что в выборку попали только iPhone. Если страниц несколько – проверить все.
- * 11. Тест должен работать для любого производителя
  */
 public class Tests extends WebHooks {
     /**
-     * Тест-кейс выборки и поиска в Яндекс-маркет (версии v.1 и v.2)
-     * параметры поставляются провайдером данных providerYandexMarket()
-     * @param search
+     * Тест-кейс выборки и поиска в Сбербанк-АСТ
+     * параметры поставляются провайдером данных providerSberAst()
+     * @param search          текст для поиска (Страхование)
+     * @param price           больше цены (600000)
+     * @param currency        валюта (RUB)
+     * @param law             закон (44-ФЗ)
+     * @param maxCountView    макс.кол-во просмотра (120)
+     * @param countChoice     количество для выборки (10)
      */
     @DisplayName("Тестирование выборки в Сбер-АСТ")
-    @ParameterizedTest(name = "{displayName} {arguments}")
+    @ParameterizedTest(name = "{arguments}")
     @MethodSource("ru.vasyukov.Test.DataProvider#providerSberAst")
-    public void testSberAstChoice(String search) {
+    public void testSberAstChoice(String search, double price, String currency, String law,
+                                  int maxCountView, int countChoice) {
         openFirstPageSberAst(1)
                 .checkSberAstTitle(2)
                 .inputSearchField(3, search)
-                .collectAllPageResults(4, 600000.0, "RUB", "44-ФЗ", 120, 10)
+                .collectAllPageResults(4, price, currency, law, maxCountView, countChoice)
                 .reportResults(5);
     }
 }
