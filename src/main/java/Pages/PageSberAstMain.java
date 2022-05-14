@@ -188,7 +188,7 @@ public class PageSberAstMain extends BasePage {
      * @param price   цена
      * @param code    код
      */
-    @Step("step {step}.{i}. {name}  Цена:{price}  Код:{code}")  // step 6
+    @Step("step {step}.{subStep}. {name}  Цена:{price}  Код:{code}")  // step 6
     public void reportStep(int step, int subStep, String name, String price, String code) {}
 
     /**
