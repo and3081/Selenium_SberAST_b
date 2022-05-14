@@ -33,9 +33,9 @@ public class BasePage {
     public String XPATH_TITLE = "//head/title";
 
     /**
-     * Шаг Проверить title страницы
+     * Шаг Проверить фрагмент title страницы
      * @param step  номер шага для аллюра
-     * @param title проверочный title
+     * @param title фрагмент title
      */
     @Step("step {step}. Проверить фрагмент title страницы '{title}'")  // step 2
     public void checkTitleFragment(int step, String title) {
@@ -50,10 +50,10 @@ public class BasePage {
     public static void maxWindow() { getWebDriver().manage().window().maximize(); }
 
     /**
-     * Шаг Открыть браузер и стартовую страницу Яндекс, максимизация окна браузера
+     * Шаг Открыть браузер и стартовую страницу Сбер-АСТ, максимизация окна браузера
      * static
      * @param step  номер шага для аллюра
-     * @return PO PageYandexSearch
+     * @return PO PageSberAstMain
      */
     @Step("step {step}. Открыть браузер и стартовую страницу Сбер-АСТ")  // step 1
     public static PageSberAstMain openFirstPageSberAst(int step) {

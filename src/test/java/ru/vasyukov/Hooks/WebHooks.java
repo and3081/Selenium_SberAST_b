@@ -13,7 +13,9 @@ import org.openqa.selenium.support.events.WebDriverListener;
 import static com.codeborne.selenide.WebDriverRunner.*;
 
 /**
- * Родительский класс для тестов (методы BeforeEach и AfterEach)
+ * Родительский класс для тестов:
+ *   настройка опций браузера и листенера первый раз,
+ *   методы BeforeEach и AfterEach
  */
 public class WebHooks {
     /**

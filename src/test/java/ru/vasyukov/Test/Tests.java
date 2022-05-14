@@ -9,7 +9,7 @@ import static Pages.BasePage.openFirstPageSberAst;
 
 /**
  * Класс тест-кейсов
- * @author Васюков А.Ю.  GitHub  https://github.com/and3081/Selenide_YMarket_b
+ * @author Васюков А.Ю.  GitHub  https://github.com/and3081/Selenide_SberAST_b
  * @version 1.0
  * Описание тест-кейса:
  * 1. сайт https://www.sberbank-ast.ru госзакупки
@@ -19,7 +19,9 @@ import static Pages.BasePage.openFirstPageSberAst;
  *    цена > 600 тыс. руб,
  *    тип Госзакупки по 44-ФЗ.
  *    Проверять только первые 120 результатов в списке.
- * 5. В инфо выводить: название, цену, номер (в консоль, в Step аллюра).
+ * 5. проверить количество фактической выборки
+ * 6. В инфо выводить: название, цену, номер (в консоль, в Step аллюра),
+ *    Json-attachment в аллюр.
  *
  * Настраиваемые листенеры в проперти:
  *       - какие типы методов скринить: драйвер, элементы, все варианты или отключить
@@ -38,8 +40,8 @@ public class Tests extends WebHooks {
      * @param search          текст для поиска (Страхование)
      * @param price           больше цены (600000)
      * @param currency        валюта (RUB)
-     * @param law             закон (44-ФЗ)
-     * @param maxCountView    макс.кол-во просмотра (120)
+     * @param law             фрагмент закона (44-ФЗ)
+     * @param maxCountView    макс.кол-во позиций просмотра (120)
      * @param countChoice     количество для выборки (10)
      */
     @DisplayName("Тестирование выборки в Сбер-АСТ")
