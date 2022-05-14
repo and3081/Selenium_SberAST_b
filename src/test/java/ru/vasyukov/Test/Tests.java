@@ -46,6 +46,7 @@ public class Tests extends WebHooks {
         openFirstPageSberAst(1)
                 .checkSberAstTitle(2)
                 .inputSearchField(3, search)
-                .collectAllPageResults(4, 600000.0, "RUB", "44-ФЗ", 120, 10);
+                .collectAllPageResults(4, 600000.0, "RUB", "44-ФЗ", 120, 10)
+                .reportResults(5);
     }
 }
