@@ -34,7 +34,8 @@ public class BasePage {
      */
     protected static Actions actions;
 
-    static {
+    private static void init(WebDriver driver) {
+        BasePage.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofMillis(timeoutExplicitMs));
         actions = new Actions(driver);
     }
@@ -48,7 +49,7 @@ public class BasePage {
      */
     @Step("step {step}. Открыть стартовую страницу Сбер-АСТ")  // step 1
     public static PageSberAstMain openFirstPageSberAst(int step, WebDriver driver) {
-        BasePage.driver = driver;
+        init(driver);
         driver.get(TestData.props.baseUrlSberAst());
         return new PageSberAstMain();
     }
