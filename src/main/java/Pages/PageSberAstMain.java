@@ -1,5 +1,6 @@
 package Pages;
 
+import Custom.Json.MapToJson;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 
@@ -70,8 +71,6 @@ public class PageSberAstMain extends BasePage {
                         if (listAll.size() < maxCountChoice) listAll.add(el);
                     });
         } while (listAll.size() < maxCountChoice && countView < maxCountView && clickNextPage(nextPageNumber));
-        Assertions.assertEquals(maxCountChoice, listAll.size(),
-                "Не найдено заданное количество требуемых позиций");
         return this;
     }
 
@@ -92,7 +91,14 @@ public class PageSberAstMain extends BasePage {
         return list;
     }
 
-    @Step("step {step}. Отчет")  // step 5
+    @Step("step {step}. Проверка количества выборки: {maxCountChoice}")  // step 5
+    public PageSberAstMain assertResults(int step, int maxCountChoice) {
+        Assertions.assertEquals(maxCountChoice, listAll.size(),
+                "Не найдено заданное количество требуемых позиций");
+        return this;
+    }
+
+    @Step("step {step}. Отчет")  // step 6
     public PageSberAstMain reportResults(int step) {
         AtomicInteger i = new AtomicInteger(1);
         listAll.forEach(el-> {
@@ -103,6 +109,7 @@ public class PageSberAstMain extends BasePage {
             reportStep(step, i.get(), el.get("name"), el.get("price"), el.get("code"));
             i.incrementAndGet();
         });
+        MapToJson.listMapToJson(listAll);
         return this;
     }
 

@@ -51,6 +51,7 @@ public class Tests extends WebHooks {
                 .checkSberAstTitle(2)
                 .inputSearchField(3, search)
                 .collectAllPageResults(4, price, currency, law, maxCountView, countChoice)
-                .reportResults(5);
+                .assertResults(5, countChoice)
+                .reportResults(6);
     }
 }
