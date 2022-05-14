@@ -1,6 +1,7 @@
 package Pages;
 
-import Custom.Json.MapToJson;
+import Custom.Json.ListMapToJson;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 
@@ -54,9 +55,9 @@ public class PageSberAstMain extends BasePage {
         return this;
     }
 
-    @Step("step {step}. Сбор информации '{price}' '{currency}' '{law}' (позиций: {maxCountChoice})")  // step 4
+    @Step("step {step}. Сбор информации '{price}' '{currency}' '{law}' (позиций: {countChoice})")  // step 4
     public PageSberAstMain collectAllPageResults(int step, double price, String currency, String law,
-                                                 int maxCountView, int maxCountChoice) {
+                                                 int maxCountView, int countChoice) {
         int countView = 0, nextPageNumber = 1, subStep = 0;
         do {
             subStep++;
@@ -68,9 +69,9 @@ public class PageSberAstMain extends BasePage {
                             && el.get("law").contains(law)
                             && Double.parseDouble(el.get("price")) > price)
                     .forEach(el -> {
-                        if (listAll.size() < maxCountChoice) listAll.add(el);
+                        if (listAll.size() < countChoice) listAll.add(el);
                     });
-        } while (listAll.size() < maxCountChoice && countView < maxCountView && clickNextPage(nextPageNumber));
+        } while (listAll.size() < countChoice && countView < maxCountView && clickNextPage(nextPageNumber));
         return this;
     }
 
@@ -91,9 +92,9 @@ public class PageSberAstMain extends BasePage {
         return list;
     }
 
-    @Step("step {step}. Проверка количества выборки: {maxCountChoice}")  // step 5
-    public PageSberAstMain assertResults(int step, int maxCountChoice) {
-        Assertions.assertEquals(maxCountChoice, listAll.size(),
+    @Step("step {step}. Проверка количества выборки: {countChoice}")  // step 5
+    public PageSberAstMain assertResults(int step, int countChoice) {
+        Assertions.assertEquals(countChoice, listAll.size(),
                 "Не найдено заданное количество требуемых позиций");
         return this;
     }
@@ -109,7 +110,8 @@ public class PageSberAstMain extends BasePage {
             reportStep(step, i.get(), el.get("name"), el.get("price"), el.get("code"));
             i.incrementAndGet();
         });
-        MapToJson.listMapToJson(listAll);
+        String json = ListMapToJson.listMapToJson(listAll);
+        if (json !=null) Allure.addAttachment("Данные выборки Json", "application/json", json);
         return this;
     }
 
