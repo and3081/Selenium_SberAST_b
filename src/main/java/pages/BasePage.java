@@ -1,6 +1,6 @@
-package Pages;
+package pages;
 
-import Custom.properties.TestData;
+import custom.properties.TestData;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.ThrowingSupplier;
@@ -24,7 +24,7 @@ public class BasePage {
     /**
      * Значение явного ожидания ms из проперти
      */
-    protected static long timeoutExplicitMs = Long.parseLong(TestData.props.defaultTimeoutExplicitMs());
+    protected static long timeoutExplicitMs = Long.parseLong(TestData.browser.defaultTimeoutExplicitMs());
     /**
      * Объект явных ожиданий
      */
@@ -54,7 +54,7 @@ public class BasePage {
     @Step("step {step}. Открыть стартовую страницу Сбер-АСТ")  // step 1
     public static PageSberAstMain openFirstPageSberAst(int step, WebDriver driver) {
         init(driver);
-        driver.get(TestData.props.baseUrlSberAst());
+        driver.get(TestData.browser.baseUrlSberAst());
         return new PageSberAstMain();
     }
 

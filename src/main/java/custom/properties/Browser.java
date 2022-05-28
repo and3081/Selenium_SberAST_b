@@ -1,19 +1,19 @@
-package Custom.properties;
+package custom.properties;
 
 import org.aeonbits.owner.Config;
 
 /**
- * Интерфейс для работы с проперти из файла props.properties и системными проперти
- * usage:  TestData.props.имяМетодаКлюча()
+ * Интерфейс для работы с проперти из файла browser.properties и системными проперти
+ * usage:  TestData.browser.имяМетодаКлюча()
  * Описание в файле проперти
  */
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({
         "system:properties",
         "system:env",
-        "file:props.properties"
+        "file:browser.properties"
 })
-public interface Props extends Config {
+public interface Browser extends Config {
     @Key("base.url.sber.ast")
     String baseUrlSberAst();
 

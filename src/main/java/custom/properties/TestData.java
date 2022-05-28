@@ -1,4 +1,4 @@
-package Custom.properties;
+package custom.properties;
 
 import org.aeonbits.owner.ConfigFactory;
 
@@ -8,8 +8,8 @@ import org.aeonbits.owner.ConfigFactory;
  */
 public class TestData {
     /**
-     * static метод для работы с проперти из файла props.properties и listener.properties
+     * static метод для работы с проперти из файла browser.properties и listener.properties
      */
-    public static Props props = ConfigFactory.create(Props.class);
+    public static Browser browser = ConfigFactory.create(Browser.class);
     public static Listener listener = ConfigFactory.create(Listener.class);
 }

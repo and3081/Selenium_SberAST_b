@@ -1,7 +1,7 @@
-package ru.vasyukov.Hooks;
+package ru.vasyukov.hooks;
 
-import Custom.listeners.Listeners;
-import Custom.properties.TestData;
+import custom.listeners.Listeners;
+import custom.properties.TestData;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,15 +10,21 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.openqa.selenium.support.events.WebDriverListener;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
+import java.util.Map;
 
 /**
- * Родительский класс для тестов: настройка опций браузера и листенера,
- * открытие/закрытие браузера Chrome или Edge (настройки в проперти)
- *   методы BeforeEach и AfterEach
+ * Класс хуков для настройки web драйвера по проперти browser.properties:
+ *  - локального
+ *  - удаленного (Selenide)
+ *  - ремоут (Selenoid)
  */
 public class WebHooks {
     /**
@@ -36,7 +42,7 @@ public class WebHooks {
     @BeforeEach
     @Step("step  . Открытие браузера")
     protected void openBrowsers() {
-        String typeBrowser = TestData.props.typeBrowser();
+        String typeBrowser = TestData.browser.typeBrowser();
         if (typeBrowser !=null && typeBrowser.equals("edge")) {
             if (listener==null) driver = initEdge();
             else driver = new EventFiringDecorator(listener).decorate(initEdge());
@@ -52,7 +58,7 @@ public class WebHooks {
     @AfterEach
     @Step("step end. Закрытие браузера")
     protected void closeBrowsers() {
-        if (driver != null && TestData.props.dontCloseBrowser() ==null) {
+        if (driver != null && TestData.browser.dontCloseBrowser() ==null) {
             driver.quit();
             driver = null;
         }
@@ -63,12 +69,27 @@ public class WebHooks {
      * Путь к chromedriver.exe в сист.переменной CHROME_DRIVER
      */
     private WebDriver initChrome() {
-        System.setProperty("webdriver.chrome.driver",
-                System.getenv(TestData.props.webdriverChromeLocalPath())); //, "drivers/chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        if (TestData.props.headlessMode() !=null)
-            options.addArguments("--headless");
-        driver = new ChromeDriver(options);
+        if (TestData.browser.remoteUrl() != null) {
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setCapability("browserName", "chrome");
+            capabilities.setCapability("browserVersion", "101.0");
+            capabilities.setCapability("selenoid:options", Map.<String, Object>of(
+                    "enableVNC", true,
+                    "enableVideo", true));
+            try {
+                driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"), capabilities);
+                setDriverDefaultSettings();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.setProperty("webdriver.chrome.driver",
+                    System.getenv(TestData.browser.webdriverChromeLocalPath())); //, "drivers/chromedriver.exe");
+            ChromeOptions options = new ChromeOptions();
+            if (TestData.browser.headlessMode() != null)
+                options.addArguments("--headless");
+            driver = new ChromeDriver(options);
+        }
         setDriverDefaultSettings();
         return driver;
     }
@@ -79,9 +100,9 @@ public class WebHooks {
      */
     private WebDriver initEdge() {
         System.setProperty("webdriver.edge.driver",
-                System.getenv(TestData.props.webdriverEdgeLocalPath())); //, "drivers/chromedriver.exe");
+                System.getenv(TestData.browser.webdriverEdgeLocalPath())); //, "drivers/chromedriver.exe");
         EdgeOptions options = new EdgeOptions();
-        if (TestData.props.headlessMode() !=null)
+        if (TestData.browser.headlessMode() !=null)
             options.addArguments("--headless");
         driver = new EdgeDriver(options);
         setDriverDefaultSettings();
@@ -93,7 +114,7 @@ public class WebHooks {
      */
     private void setDriverDefaultSettings() {
         driver.manage().window().maximize();
-        long timeout = Long.parseLong(TestData.props.defaultTimeoutImplicitMs());
+        long timeout = Long.parseLong(TestData.browser.defaultTimeoutImplicitMs());
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(timeout));
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(timeout));
