@@ -154,7 +154,7 @@ public class BasePage {
      * @return          при успехе транслирует возврат от условия wait()
      */
     private <T> T myAssert(ThrowingSupplier<T> supplier, String message) {
-        return Assertions.assertTimeoutPreemptively(Duration.ofSeconds(timeoutExplicitMs), supplier, message);
+        return Assertions.assertTimeoutPreemptively(Duration.ofMillis(timeoutExplicitMs), supplier, message);
     }
 
     /**

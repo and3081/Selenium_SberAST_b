@@ -114,10 +114,10 @@ public class WebHooks {
      */
     private void setDriverDefaultSettings() {
         driver.manage().window().maximize();
-        long timeout = Long.parseLong(TestData.browser.defaultTimeoutImplicitMs());
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(timeout));
-        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(timeout));
+        long timeoutMs = Long.parseLong(TestData.browser.defaultTimeoutImplicitMs());
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(timeoutMs));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofMillis(timeoutMs));
+        driver.manage().timeouts().scriptTimeout(Duration.ofMillis(timeoutMs));
         driver.manage().deleteAllCookies();
     }
 }
