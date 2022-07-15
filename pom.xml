@@ -11,14 +11,20 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <junit.jupiter.version>5.7.0-M1</junit.jupiter.version>
         <seleniumhq.selenium>4.1.1</seleniumhq.selenium>
         <selenium.support>4.1.1</selenium.support>
-        <qameta.allure>2.17.3</qameta.allure>
+        <webdrivermanager.version>5.2.0</webdrivermanager.version>
+        <json.version>20220320</json.version>
         <aspectj.version>1.9.4</aspectj.version>
+        <maven-surefire.version>3.0.0-M5</maven-surefire.version>
         <allure.version>2.17.3</allure.version>
         <owner.version>1.0.12</owner.version>
-        <json.version>20220320</json.version>
+
+        <parallelCount>1</parallelCount>
     </properties>
 
     <dependencies>
@@ -57,11 +63,18 @@
             <version>${selenium.support}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5 -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
-            <version>${qameta.allure}</version>
+            <version>${allure.version}</version>
         </dependency>
 
         <!--Для скринов-->
@@ -104,6 +117,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
+                    <encoding>UTF-8</encoding>
                     <source>9</source>
                     <target>9</target>
                 </configuration>
@@ -111,13 +125,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>${maven-surefire.version}</version>
                 <configuration>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-<!--                        awa-->
-                        -Dcucumber.plugin="io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm"
-<!--                        awa-->
+<!--                        -Dcucumber.plugin="io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm"-->
 <!--                        нужно указать кодировку иначе в терминале не будет кирилицы у фич кукумбера-->
                         -Dfile.encoding=UTF-8
                     </argLine>
