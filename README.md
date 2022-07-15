@@ -1,4 +1,4 @@
-#### Тестирование выборки в Сбер-АСТ https://www.sberbank-ast.ru
+## Тестирование выборки в Сбер-АСТ https://www.sberbank-ast.ru
 * Selenium
 * Java 11 / Maven
 * Junit5
@@ -18,7 +18,7 @@ mvn allure:serve
 * browser.properties - настройки браузеров и веб-драйвера (описание в файле)
 * listener.properties - настройки автоматического листенера скриншотов для Allure (описание в файле)
 
-# тест-кейсы:
+## тест-кейсы:
 1. Открыть сайт https://www.sberbank-ast.ru госзакупки
 2. Проверить title
 3. Запрос "Страхование"
