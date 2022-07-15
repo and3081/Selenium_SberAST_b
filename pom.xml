@@ -14,9 +14,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <junit.jupiter.version>5.7.0-M1</junit.jupiter.version>
-        <seleniumhq.selenium>4.1.1</seleniumhq.selenium>
-        <selenium.support>4.1.1</selenium.support>
+        <junit.jupiter.version>5.8.2</junit.jupiter.version>
+        <seleniumhq.selenium>4.2.1</seleniumhq.selenium>
+        <selenium.support>4.2.1</selenium.support>
         <webdrivermanager.version>5.2.0</webdrivermanager.version>
         <json.version>20220320</json.version>
         <aspectj.version>1.9.4</aspectj.version>
