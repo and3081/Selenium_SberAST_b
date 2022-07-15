@@ -14,9 +14,6 @@ import org.aeonbits.owner.Config;
         "file:browser.properties"
 })
 public interface Browser extends Config {
-    @Key("base.url.sber.ast")
-    String baseUrlSberAst();
-
     @Key("wdm")
     String wdm();
 

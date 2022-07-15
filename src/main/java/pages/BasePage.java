@@ -54,7 +54,7 @@ public class BasePage {
     @Step("step {step}. Открыть стартовую страницу Сбер-АСТ")  // step 1
     public static PageSberAstMain openFirstPageSberAst(int step, WebDriver driver) {
         init(driver);
-        driver.get(TestData.browser.baseUrlSberAst());
+        driver.get(TestData.application.baseUrlSberAst());
         return new PageSberAstMain();
     }
 
