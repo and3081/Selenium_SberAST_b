@@ -146,7 +146,6 @@ public class BasePage {
      * Обертка для явных ожиданий
      * Все ожидания wait() обернуты в ассерт assertTimeoutPreemptively с таймаутом из проперти для:
      * - устраняется баг по цеплянию неявного ожидания
-     * - при неуспехе wait() в аллюр отправляется свое сообщение, а не простыня исключения
      * @param supplier  оборачиваемый executable wait (лямбда supplier)
      *                  usage: ()->wait.until(...)
      * @param message   доп.сообщение для ассерта
@@ -161,19 +160,62 @@ public class BasePage {
      * Ожидание и выполнение реального клика, при ElementClickInterceptedException (перекрытие элемента)
      * отправляется ESC в фокус для попытки снятия попапа
      * @param el  элемент для клика
+     * @param xpath  для попытки заново получить элемент / null
      * @return true- клик сделан
      */
-    public boolean waitRealClick(WebElement el) {
+    @SuppressWarnings("UnusedReturnValue")
+    public boolean waitRealClick(WebElement el, String xpath) {
         boolean[] isClick = new boolean[]{false};
-        myAssert(() -> wait.until((ExpectedCondition<Boolean>) driver -> {
-            try { el.click();
-            } catch (ElementClickInterceptedException e) {
-                actions.sendKeys(Keys.ESCAPE).perform();  // попытка снять попап
-                return false;
-            } catch (Exception e) {
-                return false;
-            } isClick[0] = true; return true; }),
-                "Ожидание клика на элемент исчерпано (клик чем-то закрыт)");
+
+        myAssert(() ->new WebDriverWait(driver, Duration.ofMillis(timeoutExplicitMs))
+                        .pollingEvery(Duration.ofMillis(200))
+                        .ignoreAll(List.of(TimeoutException.class))
+                        .until((ExpectedCondition<Boolean>) driver -> {
+                            try {
+                                el.click();
+                            } catch (ElementClickInterceptedException e) {
+                                actions.sendKeys(Keys.ESCAPE).perform();  // попытка снять попап
+                                return false;
+                            } catch (Exception e) {
+                                if (xpath != null) {
+                                    assert driver != null;
+                                    driver.findElement(By.xpath(xpath)).click();  // попытка заново получить элемент
+                                }
+                                return false;
+                            }
+                            isClick[0] = true;
+                            return true; }),
+                "Ожидание клика на элемент исчерпано (возможно элемент чем-то закрыт):\n" + xpath);
         return isClick[0];
+    }
+
+    /**
+     * Ожидание и выполнение реального send
+     * @param el     элемент для send
+     * @param xpath  для попытки заново получить элемент / null
+     * @param text   текст для send
+     * @return true- send сделан
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    public boolean waitRealSend(WebElement el, String xpath, String text) {
+        boolean[] isSend = new boolean[]{false};
+
+        myAssert(() -> new WebDriverWait(driver, Duration.ofMillis(timeoutExplicitMs))
+                        .pollingEvery(Duration.ofMillis(200))
+                        .ignoreAll(List.of(TimeoutException.class))
+                        .until((ExpectedCondition<Boolean>) driver -> {
+                            try {
+                                el.sendKeys(text);
+                            } catch (Exception e) {
+                                if (xpath != null) {
+                                    assert driver != null;
+                                    driver.findElement(By.xpath(xpath)).sendKeys(text);  // попытка заново получить элемент
+                                }
+                                return false;
+                            }
+                            isSend[0] = true;
+                            return true; }),
+                "Ожидание send '"+ text +"' в элемент исчерпано:\n" + xpath);
+        return isSend[0];
     }
 }

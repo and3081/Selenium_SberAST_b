@@ -202,7 +202,8 @@ public class PageSberAstMain extends BasePage {
     public boolean clickNextPage(int nextNumber) {
         String attr = waitVisibleXpath(XPATH_NEXT_PAGE_BUTTON, "next page").getAttribute("content");
         if (attr!=null && nextNumber == Integer.parseInt(attr)) {
-            waitVisibleClickableXpath(XPATH_NEXT_PAGE_BUTTON, "next page").click();
+            waitRealClick(waitVisibleClickableXpath(XPATH_NEXT_PAGE_BUTTON, "next page"),
+                    XPATH_NEXT_PAGE_BUTTON);
             return true;
         }
         return false;
